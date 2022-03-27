@@ -287,6 +287,7 @@ class AuthorizationMiddleware(BaseHTTPMiddleware):
             Response: ...
         """
         token: str = request.headers.get("Authorization", None)
+        request.state.user = CurrentUser()
         if token:
             try:
                 user = self.get_data(token)

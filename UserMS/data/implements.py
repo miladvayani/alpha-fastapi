@@ -34,14 +34,14 @@ class MongoUserDataLayer(UserDataLayer):
         )
 
     async def add_legal_for_user(self, user_id: ObjectId, legal_data: dict) -> ObjectId:
-        legal = LegalInfo(legal_data)
+        legal = LegalInfo(**legal_data)
         await root.db[self.collection].update_one(
             {"_id": user_id}, {"$push": {"legal_info": legal.dict(by_alias=True)}}
         )
         return legal.id
 
     async def update_legal_of_user(self, user_id: ObjectId, legal_data: dict) -> None:
-        legal = LegalInfo(legal_data)
+        legal = LegalInfo(**legal_data)
         await root.db[self.collection].update_one(
             {"_id": user_id, "legal_info._id": legal.id},
             {"$set": {"legal_info.$": legal.dict(by_alias=True)}},

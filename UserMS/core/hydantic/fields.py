@@ -1,7 +1,7 @@
 import decimal
 import re
 from datetime import datetime
-from typing import Any, Dict, Pattern, cast
+from typing import Any, Dict, Optional, Pattern, cast, List, Type, Callable
 
 import bson
 import bson.binary
@@ -16,12 +16,16 @@ from pydantic.validators import (
     int_validator,
     pattern_validator,
 )
+from pydantic.fields import ModelField
+from pydantic.types import _registered
+from pydantic import StrictStr
 from .validators import _
 from .validators import validate_economical_code
 from .validators import validate_mobile_number
 from .validators import validate_national_code
 from .validators import validate_national_id
 from .validators import validate_phone_number
+from .base import BaseConstrainedStr
 
 
 class ObjectId(bson.ObjectId):
@@ -40,7 +44,7 @@ class ObjectId(bson.ObjectId):
     @classmethod
     def validate(cls, v: Any) -> bson.ObjectId:
         if isinstance(v, (bson.ObjectId, cls)):
-            return v
+            return str(v)
         if isinstance(v, str) and bson.ObjectId.is_valid(v):
             return bson.ObjectId(v)
         raise TypeError(_("invalid ObjectId specified"))
@@ -152,49 +156,9 @@ class NationalCode(str):
         )
 
     @classmethod
-    def validate(cls, v: str):
+    def validate(cls, v: str) -> str:
         validate_national_code(v)
         return v
-
-
-class Numeric(str):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-
-    @classmethod
-    def __modify_schema__(cls, field_schema: Dict) -> None:
-        field_schema.update(
-            examples=["1234556789", "1111111111"],
-            example="1234556789",
-            type="string",
-        )
-
-    @classmethod
-    def validate(cls, v: str):
-        if v.isalnum():
-            return v
-        raise ValueError(_("Invalid Numeric Number"))
-
-
-class AlphaNumeric(str):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-
-    @classmethod
-    def __modify_schema__(cls, field_schema: Dict) -> None:
-        field_schema.update(
-            examples=["abc123", "123xpa2"],
-            example="aaa111",
-            type="string",
-        )
-
-    @classmethod
-    def validate(cls, v: str):
-        if v.isalpha():
-            return v
-        raise ValueError(_("Invalid Numeric Number"))
 
 
 class PhoneNumber(str):
@@ -207,13 +171,13 @@ class PhoneNumber(str):
         field_schema.update(
             examples=["4128356988", "4135631245"],
             example="4130000000",
-            type="string",
+            type="number",
         )
 
     @classmethod
-    def validate(cls, v: str):
+    def validate(cls, v: str) -> str:
         validate_phone_number(v)
-        return v
+        return cls(v)
 
 
 class MobileNumber(str):
@@ -237,20 +201,53 @@ class MobileNumber(str):
 
 class EconomicalCode(str):
     @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-
-    @classmethod
-    def __modify_schema__(cls, field_schema: Dict) -> None:
+    def __modify_schema__(cls, field_schema: Dict, field: Optional[ModelField]) -> None:
         field_schema.update(
             examples=["411000000000", "4110000000000000"],
+            example="411000000000",
             type="string",
         )
 
     @classmethod
-    def validate(cls, v: str):
+    def __get_validators__(cls):
+        yield cls.validate
+
+    @classmethod
+    def validate(cls, v: str) -> str:
         validate_economical_code(v)
         return v
+
+
+class StrField:
+    def __new__(
+        cls,
+        *,
+        numeric: bool = True,
+        alphabetic: bool = True,
+        strip_whitespace: bool = False,
+        to_lower: bool = False,
+        strict: bool = False,
+        min_length: int = None,
+        max_length: int = None,
+        curtail_length: int = None,
+        validators: List[Callable] = [],
+        regex: str = None,
+    ) -> Type[str]:
+        namespace = dict(
+            numeric=numeric,
+            alphabetic=alphabetic,
+            strip_whitespace=strip_whitespace,
+            to_lower=to_lower,
+            strict=strict,
+            min_length=min_length,
+            max_length=max_length,
+            curtail_length=curtail_length,
+            validators=validators,
+            regex=regex and re.compile(regex),
+        )
+        return _registered(
+            type("ConstrainedStrValue", (BaseConstrainedStr,), namespace)
+        )
 
 
 class _Pattern:

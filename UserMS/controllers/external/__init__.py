@@ -4,7 +4,7 @@ from ...core.permissions.checker import PermissionChecker
 
 router = APIRouter(
     prefix="/v2",
-    tags=["Users"],
+    tags=["Users", "Legals"],
     dependencies=[Depends(PermissionChecker(UserAuthenticated()).check)],
 )
 

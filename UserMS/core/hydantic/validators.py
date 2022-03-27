@@ -1,4 +1,7 @@
 import phonenumbers
+from typing import Any, Callable
+from inspect import iscoroutinefunction
+from asyncio import get_event_loop
 from ..i18n import _
 
 
@@ -33,16 +36,16 @@ def validate_national_code(nc):
     algorithm for check that national number is right
     """
     if len(nc) != 10:
-        raise ValueError(_("Invalid Buyer id"))
+        raise ValueError(_("Invalid Buyer id"), code="invalid")
     try:
         int(nc)
     except (TypeError, ValueError):
-        raise ValueError(_("Invalid Buyer id"))
+        raise ValueError(_("Invalid Buyer id"), code="invalid")
     not_national = list()
     for i in range(0, 10):
         not_national.append(str(i) * 10)
     if nc in not_national:
-        raise ValueError(_("Invalid Buyer id"))
+        raise ValueError(_("Invalid Buyer id"), code="invalid")
     total = 0
     nc_p = nc[:9]
     i = 0
@@ -52,19 +55,19 @@ def validate_national_code(nc):
     rem = total % 11
     if rem < 2:
         if int(nc[9]) != rem:
-            raise ValueError(_("Invalid Buyer id"))
+            raise ValueError(_("Invalid Buyer id"), code="invalid")
     else:
         if int(nc[9]) != 11 - rem:
-            raise ValueError(_("Invalid Buyer id"))
+            raise ValueError(_("Invalid Buyer id"), code="invalid")
 
 
 def validate_national_id(ni):
     if len(ni) != 11:
-        raise ValueError(_("National ID is Invalid"))
+        raise ValueError(_("National ID is Invalid"), code="invalid")
     try:
         int(ni)
     except (TypeError, ValueError):
-        raise ValueError(_("National ID is Invalid"))
+        raise ValueError(_("National ID is Invalid"), code="invalid")
     ni_p = ni[:10]
     control_digit = int(ni[-1])
     decimal = int(ni[-2]) + 2
@@ -78,30 +81,27 @@ def validate_national_id(ni):
     if result == 10:
         result = 0
     if result != control_digit:
-        raise ValueError(_("National ID is Invalid"))
+        raise ValueError(_("National ID is Invalid"), code="invalid")
 
 
 def validate_economical_code(ec):
-    if not (len(ec) == 12 or len(ec) == 16):
-        raise ValueError(_("Economical Code is Invalid"))
+    if not len(ec) == 14:
+        raise ValueError(_("Economical Code is Invalid"), code="invalid")
     try:
         int(ec)
     except (TypeError, ValueError):
-        raise ValueError(_("Economical Code is Invalid"))
+        raise ValueError(_("Economical Code is Invalid"), code="invalid")
     if not str(ec).startswith("411"):
-        raise ValueError(_("Economical Code is Invalid"))
+        raise ValueError(_("Economical Code is Invalid"), code="invalid")
+    return True
 
 
-def validate_code(value, *, max=None, min=None, number_of_digits=None):
+def async_validate(value: Any, validator: Callable, *args, **kwargs) -> Any:
+    async def run_validators(_validator: Callable):
+        if iscoroutinefunction(_validator):
+            _validator(value, *args, **kwargs)
+        else:
+            await _validator(value, *args, **kwargs)
 
-    try:
-        int(value)
-    except:
-        raise ValueError(_("Invalid Code"))
-    if number_of_digits and number_of_digits != len(str(value)):
-        raise ValueError(_("Invalid Code"))
-    else:
-        if min and int(value) < min:
-            raise ValueError(_("Invalid Code"))
-        if max and int(value) > max:
-            raise ValueError(_("Invalid Code"))
+    loop = get_event_loop()
+    loop.create_task(run_validators(validator))

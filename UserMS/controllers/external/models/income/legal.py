@@ -1,6 +1,7 @@
+from typing import Optional
 from fastapi import HTTPException
 import requests
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, constr, validator
 from UserMS import Application as root
 from UserMS.core.hydantic.fields import ObjectId
 from UserMS.core.hydantic.fields import EconomicalCode
@@ -12,17 +13,17 @@ from UserMS.core.i18n import _
 
 class AddLegalIncomeModel(BaseModel):
     organization_name: str = Field(..., max_length=300)
-    economical_code: EconomicalCode = Field(None, max_length=16)
+    economical_code: EconomicalCode
     buyer_id: NationalId = Field(..., max_length=11)
     registration_number: str = Field(..., max_length=10)
     city_name: str = Field(..., max_length=150)
     province_name: str = Field(..., max_length=150)
     phone: PhoneNumber = Field(None, max_length=10)
-    buyerpostalcode: Numeric = Field(None, max_length=10)
+    buyerpostalcode: constr(curtail_length=10)
     address: str = Field(..., max_length=200)
 
     @validator("province_name")
-    def validate(cls, v, values, **kwargs):
+    def check_province_city(cls, v, values, **kwargs):
         validate_province_city(province=v, city=values["city_name"])
         return v
 
@@ -30,7 +31,7 @@ class AddLegalIncomeModel(BaseModel):
 class UpdateLegalIncomeModel(BaseModel):
     id: ObjectId = Field(None, alias="_id")
     organization_name: str = Field(None, max_length=300)
-    economical_code: EconomicalCode = Field(None, max_length=16)
+    economical_code: Optional[EconomicalCode] = None
     buyer_id: NationalId = Field(None, max_length=11)
     registration_number: str = Field(None, max_length=10)
     city_name: str = Field(None, max_length=150)
@@ -40,7 +41,7 @@ class UpdateLegalIncomeModel(BaseModel):
     address: str = Field(None, max_length=200)
 
     @validator("province_name")
-    def check_province(cls, v: str, values: dict):
+    def check_province_city(cls, v: str, values: dict):
         if v and values.get("city_name"):
             validate_province_city(province=v, city=values["city_name"])
         return v

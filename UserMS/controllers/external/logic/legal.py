@@ -4,7 +4,6 @@ from UserMS.data.creator import MongoDataLayer
 from UserMS.core.i18n import _
 from bson.objectid import ObjectId
 from fastapi import HTTPException
-from ..logic.user import UserRepository
 
 
 class LegalRepository:
@@ -24,9 +23,9 @@ class LegalRepository:
             if legal["buyer_id"] == new_buyer_id:
                 HTTPException(400, _("Legal info already exists"))
 
-    async def add_legal(self, user: dict, legal_data: dict) -> dict:
+    async def add_legal(self, user_id: str, legal_data: dict) -> dict:
         inserted_id = await self.layer.add_legal_for_user(
-            user_id=ObjectId(user["_id"]), legal_data=legal_data
+            user_id=ObjectId(user_id), legal_data=legal_data
         )
         return {"_id": inserted_id}
 
@@ -62,7 +61,6 @@ class LegalRepository:
             HTTPException(404, _("Legal info not found"))
 
     async def delete_legal(self, user_id: str, legal_id: ObjectId) -> bool:
-
-        return await self.layer.delete_legal_of_user(
+        await self.layer.delete_legal_of_user(
             user_id=ObjectId(user_id), legal_id=legal_id
         )
