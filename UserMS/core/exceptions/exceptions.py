@@ -1,6 +1,5 @@
 import ast
 from typing import Iterable
-
 from ..responses.responses import Response
 from ..proxies import message as messages
 from ..i18n import _
@@ -36,18 +35,21 @@ async def http_422_error_handler(request: Request, exc: RequestValidationError):
     """
     Handler for 422 error to transform default pydantic error object to custom format
     """
-    exc = ast.literal_eval(exc.json())
+    exc2 = ast.literal_eval(exc.json())
     errors = {}
-    if isinstance(exc, Iterable):
-        for error in exc:
+    if isinstance(exc2, Iterable):
+        for error in exc2:
             # get error keys
             error_names = [i for i in error["loc"][1:]]
             # temp dictionary for generating each error as embeded one
             temp_dict = {}
             # asign error message with last key in error list
-            temp_dict[error_names[-1]] = error["msg"]
-            # generate or add new errors for final errors
-            errors = generate_error_dict(error_names, errors, temp_dict)
+            if error_names:
+                temp_dict[error_names[-1]] = error["msg"]
+                # generate or add new errors for final errors
+                errors = generate_error_dict(error_names, errors, temp_dict)
+            else:
+                messages("Invalid request body")
     messages(errors)
     return Response(status_code=400)
 
