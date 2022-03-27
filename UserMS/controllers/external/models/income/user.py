@@ -1,7 +1,7 @@
 from typing import Optional
 from pydantic import BaseModel, EmailStr, Field, validator
 
-from UserMS.core.hydantic.fields import Numeric
+from UserMS.core.hydantic.fields import StrField
 from UserMS.core.hydantic.fields import NationalCode
 from UserMS.core.hydantic.fields import EconomicalCode
 
@@ -15,5 +15,5 @@ class UserUpdateIncomeModel(BaseModel):
     email: EmailStr
     birth_date: str
     job: str
-    buyerpostalcode: Numeric = Field(None, max_length=10)
+    buyerpostalcode: StrField(numeric=True, alphabetic=False, max_length=10)
     address: str = Field(None, max_length=200)
