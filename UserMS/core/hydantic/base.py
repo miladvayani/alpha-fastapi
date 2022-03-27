@@ -1,12 +1,14 @@
 from pydantic.types import _registered
 from pydantic.types import ConstrainedStr
 from pydantic.types import update_not_none
-from typing import Any, Callable, Dict
+from typing import Any, Callable, Dict, List
 from .validators import async_validate
 
 
 class BaseConstrainedStr(ConstrainedStr):
 
+    examples: List[str] = []
+    example: str = None
     numeric: bool = True
     alphabetic: bool = False
     validator: Callable = None
@@ -27,6 +29,10 @@ class BaseConstrainedStr(ConstrainedStr):
                 maxLength=cls.max_length,
                 pattern=cls.regex and cls.regex.pattern,
             )
+        if cls.examples:
+            field_schema.update(examples=cls.examples)
+        if cls.example:
+            field_schema.update(example=cls.example)
 
     @classmethod
     def validate(cls, value: str) -> str:

@@ -133,6 +133,8 @@ class NationalId(str):
         field_schema.update(
             examples=["10220058054", "fffffffffff"],
             example="10220058054",
+            maximum=11,
+            minimum=11,
             type="string",
         )
 
@@ -152,6 +154,8 @@ class NationalCode(str):
         field_schema.update(
             examples=["1362643254", "ffffffffff"],
             example="1362643254",
+            maximum=10,
+            minimum=10,
             type="string",
         )
 
@@ -161,35 +165,41 @@ class NationalCode(str):
         return v
 
 
-class PhoneNumber(str):
+class MobileNumber(BaseConstrainedStr):
     @classmethod
     def __get_validators__(cls):
         yield cls.validate
 
     @classmethod
     def __modify_schema__(cls, field_schema: Dict) -> None:
-        field_schema.update(
-            examples=["4128356988", "4135631245"],
-            example="4130000000",
-            type="number",
-        )
-
-    @classmethod
-    def validate(cls, v: str) -> str:
-        validate_phone_number(v)
-        return cls(v)
-
-
-class MobileNumber(str):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-
-    @classmethod
-    def __modify_schema__(cls, field_schema: Dict) -> None:
+        super().__modify_schema__(field_schema=field_schema)
         field_schema.update(
             examples=["9144154202", "9055153323"],
             example="9144154202",
+            maximum=10,
+            minimum=10,
+            type="string",
+        )
+
+    @classmethod
+    def validate(cls, v: str):
+        validate_mobile_number(v)
+        return v
+
+
+class PhoneNumber(BaseConstrainedStr):
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate
+
+    @classmethod
+    def __modify_schema__(cls, field_schema: Dict) -> None:
+        super().__modify_schema__(field_schema=field_schema)
+        field_schema.update(
+            examples=["4130293356", "4124432345"],
+            example="4124432345",
+            maximum=10,
+            minimum=10,
             type="string",
         )
 
@@ -205,6 +215,8 @@ class EconomicalCode(str):
         field_schema.update(
             examples=["411000000000", "4110000000000000"],
             example="411000000000",
+            maximum=16,
+            minimum=12,
             type="string",
         )
 
@@ -225,6 +237,8 @@ class StrField:
         numeric: bool = True,
         alphabetic: bool = True,
         strip_whitespace: bool = False,
+        examples: List[str] = [],
+        example: str = None,
         to_lower: bool = False,
         strict: bool = False,
         min_length: int = None,
@@ -232,6 +246,7 @@ class StrField:
         curtail_length: int = None,
         validators: List[Callable] = [],
         regex: str = None,
+        extra_field: Any = None
     ) -> Type[str]:
         namespace = dict(
             numeric=numeric,
@@ -239,6 +254,8 @@ class StrField:
             strip_whitespace=strip_whitespace,
             to_lower=to_lower,
             strict=strict,
+            example=example,
+            examples=examples,
             min_length=min_length,
             max_length=max_length,
             curtail_length=curtail_length,
@@ -246,7 +263,11 @@ class StrField:
             regex=regex and re.compile(regex),
         )
         return _registered(
-            type("ConstrainedStrValue", (BaseConstrainedStr,), namespace)
+            type(
+                "ConstrainedStrValue",
+                (BaseConstrainedStr if not extra_field else extra_field,),
+                namespace,
+            )
         )
 
 
@@ -344,3 +365,32 @@ _BSON_SUBSTITUTED_FIELDS = {
     decimal.Decimal: _decimalDecimal,
     datetime: _datetime,
 }
+
+
+PostalCode = StrField(
+    numeric=True,
+    alphabetic=False,
+    strict=True,
+    min_length=10,
+    max_length=10,
+    example="1543235643",
+)
+
+PhoneField = StrField(
+    extra_field=PhoneNumber,
+    strict=True,
+    max_length=10,
+    min_length=3,
+    strip_whitespace=True,
+    numeric=True,
+    alphabetic=False,
+)
+MobileField = StrField(
+    extra_field=MobileNumber,
+    strict=True,
+    strip_whitespace=True,
+    max_length=10,
+    min_length=10,
+    numeric=True,
+    alphabetic=False,
+)

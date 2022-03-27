@@ -5,8 +5,9 @@ from pydantic import BaseModel, Field, constr, validator
 from UserMS import Application as root
 from UserMS.core.hydantic.fields import ObjectId
 from UserMS.core.hydantic.fields import EconomicalCode
-from UserMS.core.hydantic.fields import Numeric
-from UserMS.core.hydantic.fields import PhoneNumber
+from UserMS.core.hydantic.fields import StrField
+from UserMS.core.hydantic.fields import PostalCode
+from UserMS.core.hydantic.fields import PhoneField
 from UserMS.core.hydantic.fields import NationalId
 from UserMS.core.i18n import _
 
@@ -18,8 +19,8 @@ class AddLegalIncomeModel(BaseModel):
     registration_number: str = Field(..., max_length=10)
     city_name: str = Field(..., max_length=150)
     province_name: str = Field(..., max_length=150)
-    phone: PhoneNumber = Field(None, max_length=10)
-    buyerpostalcode: constr(curtail_length=10)
+    phone: PhoneField = None
+    buyerpostalcode: PostalCode = None
     address: str = Field(..., max_length=200)
 
     @validator("province_name")
@@ -36,8 +37,8 @@ class UpdateLegalIncomeModel(BaseModel):
     registration_number: str = Field(None, max_length=10)
     city_name: str = Field(None, max_length=150)
     province_name: str = Field(None, max_length=150)
-    phone: PhoneNumber = Field(None, max_length=10)
-    buyerpostalcode: Numeric = Field(None, max_length=10)
+    phone: PhoneField = None
+    buyerpostalcode: PostalCode = None
     address: str = Field(None, max_length=200)
 
     @validator("province_name")

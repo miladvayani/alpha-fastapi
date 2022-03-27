@@ -15,7 +15,6 @@ from ..models.outcome.user import *
 
 @router.get(
     "/user/",
-    tags=["Users"],
     response_model=UserResponse,
 )
 async def get_user(request: Request):
@@ -25,7 +24,7 @@ async def get_user(request: Request):
     return Response(data=user)
 
 
-@router.put("/user/", tags=["Users"], status_code=201)
+@router.put("/user/", status_code=201)
 async def update_user(request: Request, data: UserUpdateIncomeModel):
     current_user: CurrentUser = request.state.user
     repository: UserRepository = UserRepository()
