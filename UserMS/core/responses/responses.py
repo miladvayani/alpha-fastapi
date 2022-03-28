@@ -32,7 +32,7 @@ class Response(UJSONResponse):
         result: bool = True
         prepared_messages: list = message.get_private_stack()
         btsatus: int = None
-        if self.status_code != 200:
+        if self.status_code >= 200 < 300:
             result = False
         final_msgs = dict()
         validations = dict()

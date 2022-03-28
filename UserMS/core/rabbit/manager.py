@@ -2,19 +2,17 @@ import asyncio
 from datetime import datetime, timedelta
 from functools import wraps
 from typing import Any, Callable, List, Optional, Union
-from aio_pika import Connection, Exchange
-from aio_pika import Channel
+from aio_pika import Exchange, RobustConnection
 from aio_pika import connect_robust
 from aio_pika import Message
 from aio_pika import Queue
 from aio_pika import IncomingMessage
 
-from .interface import PropertiesInterface, RabbitInterface
+from .interface import RabbitInterface
 from .credentials import Credentials
 from .handler import Handler
 from .router import RabbitRouter
 from .properties import HandlerProperties
-from .properties import Properties
 
 
 class RabbitManager(RabbitInterface):
@@ -38,15 +36,18 @@ class RabbitManager(RabbitInterface):
             else Handler(self.router, **dict(self.handler_property))
         )
 
-    async def create_connection(self, loop: asyncio.AbstractEventLoop = None):
+    async def create_connection(
+        self, loop: asyncio.AbstractEventLoop = None
+    ) -> RobustConnection:
         if loop is None:
             loop = asyncio.get_event_loop()
         if not self.credentials:
-            self.connection = await connect_robust(self.connection_string, loop=loop)
+            connection = await connect_robust(self.connection_string, loop=loop)
         else:
-            self.connection = await connect_robust(
+            connection = await connect_robust(
                 self.connection_string, **self.credentials.dict(), loop=loop
             )
+        return connection
 
     def declare(self, func: Callable):
         @wraps(func)
@@ -62,32 +63,34 @@ class RabbitManager(RabbitInterface):
         routing_key: str = None,
         correlation_id: Any = None,
         reply_to: str = None,
-        expiration: Union[float, datetime, timedelta] = 1.1,
+        expiration: Union[float, datetime, timedelta] = None,
     ) -> bool:
         if routing_key is None:
             raise NotImplementedError("Routing Key Can not be null")
-        channel = await self.connection.channel(publisher_confirms=False)
+        connection = await self.create_connection()
+        channel = await connection.channel(publisher_confirms=False)
         is_published: bool = False
-        async with channel.transaction():
-            if expiration is not None:
-                message.expiration = expiration
-            if correlation_id:
-                message.correlation_id = correlation_id
-            if reply_to:
-                message.reply_to = reply_to
+        async with connection:
+            async with channel.transaction():
+                if expiration is not None:
+                    message.expiration = expiration
+                if correlation_id:
+                    message.correlation_id = correlation_id
+                if reply_to:
+                    message.reply_to = reply_to
 
-            for declaration in self.declarations:
-                result = await declaration(channel)
-                if isinstance(result, Exchange):
-                    exchange = result
-                    await exchange.publish(message=message, routing_key=routing_key)
-                    is_published = True
-                    break
-            if is_published is False:
-                await channel.default_exchange.publish(
-                    message,
-                    routing_key=routing_key,
-                )
+                for declaration in self.declarations:
+                    result = await declaration(channel)
+                    if isinstance(result, Exchange):
+                        exchange = result
+                        await exchange.publish(message=message, routing_key=routing_key)
+                        is_published = True
+                        break
+                if is_published is False:
+                    await channel.default_exchange.publish(
+                        message,
+                        routing_key=routing_key,
+                    )
         return is_published
 
     async def consume(
