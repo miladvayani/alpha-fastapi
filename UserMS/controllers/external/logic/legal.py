@@ -12,7 +12,7 @@ class LegalRepository:
 
     def check_user_info(self, user: dict) -> None:
         if user["buyer_id"] is None:
-            HTTPException(
+            raise HTTPException(
                 400, detail=_("Please complete your personal information first")
             )
 
@@ -21,7 +21,7 @@ class LegalRepository:
     ):
         for legal in exist_legal_info:
             if legal["buyer_id"] == new_buyer_id:
-                HTTPException(400, _("Legal info already exists"))
+                raise HTTPException(400, _("Legal info already exists"))
 
     async def add_legal(self, user_id: str, legal_data: dict) -> dict:
         inserted_id = await self.layer.add_legal_for_user(
@@ -36,13 +36,13 @@ class LegalRepository:
         for legal in exist_legal_info:
             if legal["_id"] == new_legal_id:
                 if legal["is_used"]:
-                    HTTPException(400, _("Legal info in use"))
+                    raise HTTPException(400, _("Legal info in use"))
                 else:
                     found = True
             elif legal["buyer_id"] == new_buyer_id:
-                HTTPException(400, _("Legal info already exists"))
+                raise HTTPException(400, _("Legal info already exists"))
         if not found:
-            HTTPException(404, _("Legal info not found"))
+            raise HTTPException(404, _("Legal info not found"))
 
     async def update_legal(self, user_id: str, legal_data: dict) -> None:
         await self.layer.update_legal_of_user(
@@ -56,9 +56,9 @@ class LegalRepository:
         for legal in exist_legal_info:
             if legal["_id"] == legal_id:
                 if legal["is_used"]:
-                    HTTPException(400, _("Legal info in use"))
+                    raise HTTPException(400, _("Legal info in use"))
         if not found:
-            HTTPException(404, _("Legal info not found"))
+            raise HTTPException(404, _("Legal info not found"))
 
     async def delete_legal(self, user_id: str, legal_id: ObjectId) -> bool:
         await self.layer.delete_legal_of_user(

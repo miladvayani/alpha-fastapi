@@ -16,12 +16,12 @@ class UserRepository:
         user = await self.layer.get_current_user(user_id=user_id)
         if user:
             return user
-        HTTPException(404, _("No Such User Exists"))
+        raise HTTPException(404, _("No Such User Exists"))
 
     async def validate_job(self, job: str) -> None:
         resp = requests.get(root.config["CONSTANTS_MS_URL"] + "validate_job/" + job)
         if resp.status_code != 200:
-            HTTPException(400, detail=_("Selected Job is Invalid"))
+            raise HTTPException(400, detail=_("Selected Job is Invalid"))
 
     async def update_user(self, user: dict, data: UserUpdateIncomeModel) -> None:
 
