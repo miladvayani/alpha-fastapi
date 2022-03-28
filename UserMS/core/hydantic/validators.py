@@ -36,16 +36,16 @@ def validate_national_code(nc):
     algorithm for check that national number is right
     """
     if len(nc) != 10:
-        raise ValueError(_("Invalid Buyer id"), code="invalid")
+        raise ValueError(_("Invalid Buyer id"))
     try:
         int(nc)
     except (TypeError, ValueError):
-        raise ValueError(_("Invalid Buyer id"), code="invalid")
+        raise ValueError(_("Invalid Buyer id"))
     not_national = list()
     for i in range(0, 10):
         not_national.append(str(i) * 10)
     if nc in not_national:
-        raise ValueError(_("Invalid Buyer id"), code="invalid")
+        raise ValueError(_("Invalid Buyer id"))
     total = 0
     nc_p = nc[:9]
     i = 0
@@ -55,19 +55,19 @@ def validate_national_code(nc):
     rem = total % 11
     if rem < 2:
         if int(nc[9]) != rem:
-            raise ValueError(_("Invalid Buyer id"), code="invalid")
+            raise ValueError(_("Invalid Buyer id"))
     else:
         if int(nc[9]) != 11 - rem:
-            raise ValueError(_("Invalid Buyer id"), code="invalid")
+            raise ValueError(_("Invalid Buyer id"))
 
 
 def validate_national_id(ni):
     if len(ni) != 11:
-        raise ValueError(_("National ID is Invalid"), code="invalid")
+        raise ValueError(_("National ID is Invalid"))
     try:
         int(ni)
     except (TypeError, ValueError):
-        raise ValueError(_("National ID is Invalid"), code="invalid")
+        raise ValueError(_("National ID is Invalid"))
     ni_p = ni[:10]
     control_digit = int(ni[-1])
     decimal = int(ni[-2]) + 2
@@ -81,18 +81,18 @@ def validate_national_id(ni):
     if result == 10:
         result = 0
     if result != control_digit:
-        raise ValueError(_("National ID is Invalid"), code="invalid")
+        raise ValueError(_("National ID is Invalid"))
 
 
 def validate_economical_code(ec):
     if not len(ec) == 14:
-        raise ValueError(_("Economical Code is Invalid"), code="invalid")
+        raise ValueError(_("Economical Code is Invalid"))
     try:
         int(ec)
     except (TypeError, ValueError):
-        raise ValueError(_("Economical Code is Invalid"), code="invalid")
+        raise ValueError(_("Economical Code is Invalid"))
     if not str(ec).startswith("411"):
-        raise ValueError(_("Economical Code is Invalid"), code="invalid")
+        raise ValueError(_("Economical Code is Invalid"))
     return True
 
 

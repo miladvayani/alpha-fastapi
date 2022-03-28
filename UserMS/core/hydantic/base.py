@@ -1,5 +1,7 @@
+from pydantic import MissingError
 from pydantic.types import _registered
 from pydantic.types import ConstrainedStr
+from pydantic.fields import ModelField
 from pydantic.types import update_not_none
 from typing import Any, Callable, Dict, List
 from .validators import async_validate
@@ -7,6 +9,7 @@ from .validators import async_validate
 
 class BaseConstrainedStr(ConstrainedStr):
 
+    empty: bool = False
     examples: List[str] = []
     example: str = None
     numeric: bool = True
@@ -35,7 +38,11 @@ class BaseConstrainedStr(ConstrainedStr):
             field_schema.update(example=cls.example)
 
     @classmethod
-    def validate(cls, value: str) -> str:
+    def validate(cls, value: str, field: ModelField) -> str:
+        if cls.empty:
+            if field.required:
+                raise MissingError
+            return None
         result: str = super().validate(value)
         if cls.numeric and not cls.alphabetic:
             if not result.isnumeric():

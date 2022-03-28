@@ -1,3 +1,4 @@
+from aio_pika import Channel
 from fastapi import FastAPI
 from pydantic import BaseSettings
 from pymongo import MongoClient
@@ -25,7 +26,7 @@ class Application:
     app: FastAPI = ...
     client: MongoClient = ...
     db: Database = ...
-    config: BaseSettings = ...
+    config: dict = ...
     jwt: JWTManager = ...
     zipkin: ZipkinManager = ...
     rabbit_manager: RabbitManager = ...
@@ -115,15 +116,21 @@ def create_app(config: BaseSettings) -> FastAPI:
     # Install Plugins
     root.rabbit_manager = RabbitManager(root.config["BROKER_URL"])
 
+    @root.rabbit_manager.declare
+    async def declare(channel: Channel):
+        await channel.declare_queue("auth_ms_test", durable=True)
+
     # # Install Event Handlers
     # # Install Application connections
     # # Startup Factory ------------------------------------------------------------------
     @root.app.on_event("startup")
     async def startup():
         await Mongo(root.config).create_connection()
-        await root.rabbit_manager.create_connection()
-        channel = await root.rabbit_manager.connection.channel()
-        queue = await channel.declare_queue("test", durable=True)
+        connection = await root.rabbit_manager.create_connection()
+        channel = await connection.channel()
+        queue = await channel.declare_queue(
+            root.config["QUEUE_NAME"], durable=True, auto_delete=True
+        )
         await root.rabbit_manager.consume(queue=queue)
         root.db = Mongo.db
         root.client = Mongo.client

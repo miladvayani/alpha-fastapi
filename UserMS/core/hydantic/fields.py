@@ -215,8 +215,8 @@ class EconomicalCode(str):
         field_schema.update(
             examples=["411000000000", "4110000000000000"],
             example="411000000000",
-            maximum=16,
-            minimum=12,
+            maximum=14,
+            minimum=14,
             type="string",
         )
 
@@ -234,6 +234,7 @@ class StrField:
     def __new__(
         cls,
         *,
+        empty: bool = True,
         numeric: bool = True,
         alphabetic: bool = True,
         strip_whitespace: bool = False,
@@ -249,6 +250,7 @@ class StrField:
         extra_field: Any = None
     ) -> Type[str]:
         namespace = dict(
+            empty=empty,
             numeric=numeric,
             alphabetic=alphabetic,
             strip_whitespace=strip_whitespace,

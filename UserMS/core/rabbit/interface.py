@@ -40,8 +40,6 @@ class RabbitInterface(ABC):
             Defaults to [].
         """
         self.connection_string = connection_str
-        self.connection: Connection = None
-        self.channel: Channel = None
         self.credentials: Credentials = credentials
         self.declarations: list = declarations
         self.handler_property: Union[PropertiesInterface, dict] = handler_property
