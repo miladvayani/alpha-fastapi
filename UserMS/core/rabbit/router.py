@@ -2,10 +2,11 @@ from functools import wraps
 from typing import Callable, List, NamedTuple
 from aio_pika import IncomingMessage
 from pydantic import BaseModel
-from .responses import RabbitResponse as Response
+from .responses import RabbitResponse as Response, Status
 from .exceptions import MethodNotAllowed
 from .exceptions import MethodNotImplemented
 from .exceptions import UrlNotFound
+from .exceptions import RabbitException
 from .request import RabbitRequest as Request
 
 
@@ -72,6 +73,25 @@ class RabbitRouter:
         raise MethodNotAllowed("Method not allowed")
 
     async def call(
-        self, func: Callable, message: IncomingMessage, request: Request
+        self,
+        func: Callable[[Request, IncomingMessage], Response],
+        message: IncomingMessage,
+        request: Request,
     ) -> Response:
-        return await func(request, message=message)
+
+        try:
+            response: Response = await func(request, message=message)
+            if response.status == Status.ack:
+                message.ack()
+            elif response.status == Status.nack:
+                message.nack()
+            elif response.status == Status.reject:
+                message.reject()
+        except RabbitException as err:
+            if err.status == Status.nack:
+                message.nack()
+            else:
+                message.reject(requeue=False)
+            response.status = err.status
+            response.detail = err.detail
+        return response

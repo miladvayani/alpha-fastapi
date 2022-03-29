@@ -1,12 +1,11 @@
 from abc import ABC
 from abc import abstractmethod
-from abc import abstractstaticmethod
 import json
-from typing import Any, Generic, Tuple
+from typing import Any, Generic, List, Union
 from typing import TypeVar
 from bson.objectid import ObjectId
 from pydantic import BaseModel
-
+from pymongo.results import UpdateResult
 
 T = TypeVar("T", BaseModel, object)
 
@@ -52,4 +51,21 @@ class UserDataLayer(Generic[T], ABC):
 
     @abstractmethod
     async def delete_legal_of_user(self, user_id: ObjectId, legal_id: ObjectId) -> None:
+        ...
+
+    async def get_user_by_mobile(self, mobile: str) -> dict:
+        ...
+
+    async def insert_user(self, data: dict) -> dict:
+        ...
+
+    async def update_bulk_user(self, query: dict, document: dict) -> UpdateResult:
+        ...
+
+    async def update_user(
+        self, user_id: Union[ObjectId, str], document: dict
+    ) -> List[ObjectId, int]:
+        ...
+
+    async def get_bulk_users(self, query: dict) -> List[dict]:
         ...

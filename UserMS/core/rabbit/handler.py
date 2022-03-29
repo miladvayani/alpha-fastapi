@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Callable, List
 from aio_pika import IncomingMessage
 from json import loads
 
@@ -74,8 +74,6 @@ class Handler:
             response: Response = await self.router.call(
                 request.view, self.message, request
             )
-            print(response)
-
         self.message = None
 
     def deserialize(self, content: str) -> dict:

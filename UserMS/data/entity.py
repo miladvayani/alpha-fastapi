@@ -36,12 +36,12 @@ class User(BaseModel):
     foreign_national_image: str = Field(None, max_length=200)
     mobile_number: MobileField
     economical_code: EconomicalCode = None
-    email: EmailStr = Field(None)
+    email: EmailStr = None
     birth_date: str = Field(None, max_length=10)
     job: str = Field(None, max_length=150)
-    legal_info: List[LegalInfo]
+    legal_info: List[LegalInfo] = []
     is_active: bool = Field(default=True)
-    buyerpostalcode: PostalCode
+    buyerpostalcode: PostalCode = None
     address: str = Field(None, max_length=200)
     is_used: bool = Field(default=False)
     is_superuser: bool = Field(default=False)

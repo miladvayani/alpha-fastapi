@@ -5,9 +5,9 @@ from enum import Enum
 class Status(int, Enum):
     """Rabbit Status Codes"""
 
-    nack: 0
-    ack: 1
-    reject: 2
+    nack = 0
+    ack = 1
+    reject = 2
 
 
 @dataclass
