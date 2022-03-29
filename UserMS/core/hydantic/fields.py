@@ -1,7 +1,7 @@
 import decimal
 import re
 from datetime import datetime
-from typing import Any, Dict, Optional, Pattern, cast, List, Type, Callable
+from typing import Any, Dict, Pattern, cast, List, Type, Callable
 
 import bson
 import bson.binary
@@ -16,9 +16,7 @@ from pydantic.validators import (
     int_validator,
     pattern_validator,
 )
-from pydantic.fields import ModelField
 from pydantic.types import _registered
-from pydantic import StrictStr
 from .validators import _
 from .validators import validate_economical_code
 from .validators import validate_mobile_number
@@ -123,113 +121,6 @@ class Regex(bson.regex.Regex):
         return bson.regex.Regex(a.pattern)
 
 
-class NationalId(str):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-
-    @classmethod
-    def __modify_schema__(cls, field_schema: Dict) -> None:
-        field_schema.update(
-            examples=["10220058054", "fffffffffff"],
-            example="10220058054",
-            maximum=11,
-            minimum=11,
-            type="string",
-        )
-
-    @classmethod
-    def validate(cls, v: str):
-        validate_national_id(v)
-        return v
-
-
-class NationalCode(str):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-
-    @classmethod
-    def __modify_schema__(cls, field_schema: Dict) -> None:
-        field_schema.update(
-            examples=["1362643254", "ffffffffff"],
-            example="1362643254",
-            maximum=10,
-            minimum=10,
-            type="string",
-        )
-
-    @classmethod
-    def validate(cls, v: str) -> str:
-        validate_national_code(v)
-        return v
-
-
-class MobileNumber(BaseConstrainedStr):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-
-    @classmethod
-    def __modify_schema__(cls, field_schema: Dict) -> None:
-        super().__modify_schema__(field_schema=field_schema)
-        field_schema.update(
-            examples=["9144154202", "9055153323"],
-            example="9144154202",
-            maximum=10,
-            minimum=10,
-            type="string",
-        )
-
-    @classmethod
-    def validate(cls, v: str):
-        validate_mobile_number(v)
-        return v
-
-
-class PhoneNumber(BaseConstrainedStr):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-
-    @classmethod
-    def __modify_schema__(cls, field_schema: Dict) -> None:
-        super().__modify_schema__(field_schema=field_schema)
-        field_schema.update(
-            examples=["4130293356", "4124432345"],
-            example="4124432345",
-            maximum=10,
-            minimum=10,
-            type="string",
-        )
-
-    @classmethod
-    def validate(cls, v: str):
-        validate_mobile_number(v)
-        return v
-
-
-class EconomicalCode(str):
-    @classmethod
-    def __modify_schema__(cls, field_schema: Dict, field: Optional[ModelField]) -> None:
-        field_schema.update(
-            examples=["411000000000", "4110000000000000"],
-            example="411000000000",
-            maximum=14,
-            minimum=14,
-            type="string",
-        )
-
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-
-    @classmethod
-    def validate(cls, v: str) -> str:
-        validate_economical_code(v)
-        return v
-
-
 class StrField:
     def __new__(
         cls,
@@ -237,17 +128,17 @@ class StrField:
         empty: bool = True,
         numeric: bool = True,
         alphabetic: bool = True,
-        strip_whitespace: bool = False,
+        strip_whitespace: bool = True,
         examples: List[str] = [],
         example: str = None,
         to_lower: bool = False,
-        strict: bool = False,
+        strict: bool = True,
         min_length: int = None,
         max_length: int = None,
         curtail_length: int = None,
-        validators: List[Callable] = [],
+        validator: Callable = None,
+        exclude: bool = False,
         regex: str = None,
-        extra_field: Any = None
     ) -> Type[str]:
         namespace = dict(
             empty=empty,
@@ -261,13 +152,14 @@ class StrField:
             min_length=min_length,
             max_length=max_length,
             curtail_length=curtail_length,
-            validators=validators,
+            validator=validator,
+            exclude=exclude,
             regex=regex and re.compile(regex),
         )
         return _registered(
             type(
                 "ConstrainedStrValue",
-                (BaseConstrainedStr if not extra_field else extra_field,),
+                (BaseConstrainedStr,),
                 namespace,
             )
         )
@@ -370,29 +262,40 @@ _BSON_SUBSTITUTED_FIELDS = {
 
 
 PostalCode = StrField(
-    numeric=True,
     alphabetic=False,
-    strict=True,
     min_length=10,
     max_length=10,
     example="1543235643",
 )
 
 PhoneField = StrField(
-    extra_field=PhoneNumber,
-    strict=True,
-    max_length=10,
-    min_length=3,
-    strip_whitespace=True,
-    numeric=True,
-    alphabetic=False,
+    max_length=10, min_length=3, alphabetic=False, validator=validate_phone_number
 )
+
 MobileField = StrField(
-    extra_field=MobileNumber,
-    strict=True,
-    strip_whitespace=True,
+    max_length=10, min_length=10, alphabetic=False, validator=validate_mobile_number
+)
+
+NationalId = StrField(
+    max_length=11,
+    min_length=11,
+    examples=["10220058054", "fffffffffff"],
+    example="10220058054",
+    validator=validate_national_id,
+)
+
+NationalCode = StrField(
     max_length=10,
     min_length=10,
-    numeric=True,
-    alphabetic=False,
+    examples=["1362643254", "ffffffffff"],
+    example="1362643254",
+    validator=validate_national_code,
+)
+
+EconomicalCode = StrField(
+    max_length=14,
+    min_length=14,
+    examples=["411000000000", "4110000000000000"],
+    example="411000000000",
+    validator=validate_economical_code,
 )

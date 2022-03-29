@@ -18,7 +18,10 @@ class AddLegalIncomeModel(BaseModel):
     economical_code: EconomicalCode
     buyer_id: NationalId
     registration_number: StrField(alphabetic=False, max_length=10)
-    city_name: StrField(numeric=False, max_length=150)
+    city_name: StrField(
+        numeric=False,
+        max_length=150,
+    )
     province_name: StrField(numeric=False, max_length=150)
     phone: PhoneField = None
     buyerpostalcode: PostalCode = None

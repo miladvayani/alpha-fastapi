@@ -1,7 +1,7 @@
 from abc import ABC
 from abc import abstractmethod
 import json
-from typing import Any, Generic, List, Union
+from typing import Any, Generic, List, Tuple, Union
 from typing import TypeVar
 from bson.objectid import ObjectId
 from pydantic import BaseModel
@@ -53,19 +53,24 @@ class UserDataLayer(Generic[T], ABC):
     async def delete_legal_of_user(self, user_id: ObjectId, legal_id: ObjectId) -> None:
         ...
 
+    @abstractmethod
     async def get_user_by_mobile(self, mobile: str) -> dict:
         ...
 
+    @abstractmethod
     async def insert_user(self, data: dict) -> dict:
         ...
 
+    @abstractmethod
     async def update_bulk_user(self, query: dict, document: dict) -> UpdateResult:
         ...
 
+    @abstractmethod
     async def update_user(
         self, user_id: Union[ObjectId, str], document: dict
-    ) -> List[ObjectId, int]:
+    ) -> Tuple[ObjectId, int]:
         ...
 
+    @abstractmethod
     async def get_bulk_users(self, query: dict) -> List[dict]:
         ...

@@ -3,6 +3,13 @@ from typing import Any, Callable
 from inspect import iscoroutinefunction
 from asyncio import get_event_loop
 from ..i18n import _
+from pydantic.validators import (
+    str_validator,
+    constr_length_validator,
+    constr_strip_whitespace,
+    constr_lower,
+    strict_str_validator,
+)
 
 
 def validate_mobile_number(mobile):
@@ -99,9 +106,10 @@ def validate_economical_code(ec):
 def async_validate(value: Any, validator: Callable, *args, **kwargs) -> Any:
     async def run_validators(_validator: Callable):
         if iscoroutinefunction(_validator):
-            _validator(value, *args, **kwargs)
+            result = await _validator(value, *args, **kwargs)
         else:
-            await _validator(value, *args, **kwargs)
+            result = _validator(value, *args, **kwargs)
+        return result
 
     loop = get_event_loop()
-    loop.create_task(run_validators(validator))
+    return loop.create_task(run_validators(validator))
