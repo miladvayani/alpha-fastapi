@@ -269,11 +269,21 @@ PostalCode = StrField(
 )
 
 PhoneField = StrField(
-    max_length=10, min_length=3, alphabetic=False, validator=validate_phone_number
+    max_length=10,
+    min_length=3,
+    examples=["4130293356", "4124432345"],
+    example="4124432345",
+    alphabetic=False,
+    validator=validate_phone_number,
 )
 
 MobileField = StrField(
-    max_length=10, min_length=10, alphabetic=False, validator=validate_mobile_number
+    max_length=10,
+    min_length=10,
+    examples=["9144154202", "9055153323"],
+    example="9144154202",
+    alphabetic=False,
+    validator=validate_mobile_number,
 )
 
 NationalId = StrField(

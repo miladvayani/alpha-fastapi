@@ -1,5 +1,5 @@
 from email.generator import Generator
-from pydantic import MissingError
+from pydantic import BaseConfig, MissingError
 from pydantic.types import _registered
 from pydantic.types import ConstrainedStr
 from pydantic.fields import ModelField
@@ -56,13 +56,15 @@ class BaseConstrainedStr(ConstrainedStr):
             field_schema.update(example=cls.example)
 
     @classmethod
-    def validate(cls, value: str, field: ModelField) -> str:
+    def validate(cls, value: str, field: ModelField, config: BaseConfig) -> str:
         field.field_info.exclude = cls.exclude
         if cls.empty:
             if not value:
                 if field.required:
                     raise MissingError
                 return None
+            else:
+                constr_length_validator(value, field=field, config=config)
         result: str = super().validate(value)
         result = result.strip().replace("ي", "ی").replace("ك", "ک")
         if cls.numeric and not cls.alphabetic:
