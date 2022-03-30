@@ -137,7 +137,9 @@ def create_app(config: BaseSettings) -> FastAPI:
 
     # Install Applications
     from .controllers.external import router
+    from .controllers.internal import api
 
     root.app.include_router(router)
+    root.app.include_router(api)
 
     return root.app

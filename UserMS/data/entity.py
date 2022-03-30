@@ -26,7 +26,7 @@ class LegalInfo(BaseModel):
 class User(BaseModel):
 
     id: Optional[ObjectId] = Field(None, alias="_id")
-    password: StrField(max_length=100, exclude=True) = None
+    password: StrField(max_length=100) = None
     first_name: StrField(max_length=70) = None
     last_name: StrField(max_length=100) = None
     buyer_id: NationalId

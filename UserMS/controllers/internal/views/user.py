@@ -1,6 +1,9 @@
 from crypt import methods
 from typing import Union
 
+from UserMS.controllers.internal.models.income.user import SetUserIncome
+from UserMS.controllers.internal.models.outcome.user import SetUserOutcome
+
 from UserMS.core.rabbit.exceptions import RabbitException
 from .. import rabbit
 from .. import api
@@ -23,11 +26,13 @@ async def get_user(request: RabbitRequest, message: IncomingMessage) -> Response
     return result
 
 
-@api.post("/user", response_class=Response)
-async def set_user(mobile_number: str):
+@api.post("/user", response_model=SetUserOutcome)
+async def set_user(user_info: SetUserIncome):
     repository = UserRepository()
-    user: dict = await repository.set_user_by_mobile(mobile_number=mobile_number)
-    return str(user["_id"])
+    user: dict = await repository.set_user_by_mobile(
+        mobile_number=user_info.mobile_number
+    )
+    return {"_id": user["_id"]}
 
 
 @rabbit.route("/user/one", method="PUT")

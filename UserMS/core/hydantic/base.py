@@ -1,3 +1,4 @@
+from abc import ABC, abstractclassmethod
 from email.generator import Generator
 from pydantic import BaseConfig, MissingError
 from pydantic.types import _registered
@@ -78,3 +79,12 @@ class BaseConstrainedStr(ConstrainedStr):
         if cls.validator:
             return async_validate(result, cls.validator)
         return result
+
+
+class BaseMultiFieldSelector(ABC):
+    def __new__(cls, *fields: List[BaseConstrainedStr]) -> BaseConstrainedStr:
+        return cls.selector(list(fields))
+
+    @abstractclassmethod
+    def selector(cls, *fields: List[BaseConstrainedStr]) -> BaseConstrainedStr:
+        raise NotImplementedError

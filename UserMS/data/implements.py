@@ -55,8 +55,6 @@ class MongoUserDataLayer(UserDataLayer):
         return result
 
     async def add_legal_for_user(self, user_id: ObjectId, legal_data: dict) -> ObjectId:
-        print(user_id)
-        pprint(legal_data)
         legal = LegalInfo(**legal_data)
         await root.db[self.collection].update_one(
             {"_id": user_id}, {"$push": {"legal_info": legal.dict(by_alias=True)}}

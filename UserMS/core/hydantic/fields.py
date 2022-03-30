@@ -1,3 +1,5 @@
+from random import randint
+from typing import Union
 import decimal
 import re
 from datetime import datetime
@@ -8,6 +10,8 @@ import bson.binary
 import bson.decimal128
 import bson.int64
 import bson.regex
+from pydantic import BaseConfig
+from pydantic.fields import ModelField
 from pydantic.datetime_parse import parse_datetime
 from pydantic.main import BaseModel
 from pydantic.validators import (
@@ -23,7 +27,8 @@ from .validators import validate_mobile_number
 from .validators import validate_national_code
 from .validators import validate_national_id
 from .validators import validate_phone_number
-from .base import BaseConstrainedStr
+from .validators import strict_str_validator
+from .base import BaseConstrainedStr, BaseMultiFieldSelector
 
 
 class ObjectId(bson.ObjectId):
@@ -309,3 +314,32 @@ EconomicalCode = StrField(
     example="411000000000",
     validator=validate_economical_code,
 )
+
+
+class MultiNationlSelector(BaseMultiFieldSelector):
+    @classmethod
+    def selector(
+        cls, fields: List[BaseConstrainedStr]
+    ) -> Union[NationalId, NationalCode]:
+        examples: List[str] = []
+        validators: List[Callable] = []
+        for field in fields:
+            examples.extend(field.examples)
+            validators.append(field.validator)
+        return StrField(
+            examples=examples,
+            example=examples[randint(0, len(examples)) - 1],
+            max_length=fields[-1].max_length,
+            min_length=fields[0].min_length,
+            validator=cls.select_national,
+        )
+
+    def select_national(value: str, field: ModelField = None) -> str:
+        lv: int = len(value)
+        if lv == 10:
+            return validate_national_code(value)
+        elif lv == 11:
+            return validate_national_id(value)
+
+
+NationlCodeId = MultiNationlSelector(NationalCode, NationalId)
