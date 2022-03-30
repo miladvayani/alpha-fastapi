@@ -1,11 +1,11 @@
 from datetime import datetime
 from typing import List
 from pydantic import BaseModel
-from UserMS.core.hydantic.fields import ObjectId
+from UserMS.core.contrib import fields
 
 
 class LegalInfoResponse(BaseModel):
-    _id: ObjectId = None
+    _id: fields.ObjectId = None
     organization_name: str = None
     economical_code: str = None
     buyer_id: str = None

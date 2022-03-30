@@ -4,7 +4,7 @@ from pydantic import BaseConfig, MissingError
 from pydantic.types import ConstrainedStr
 from pydantic.fields import ModelField
 from pydantic.types import update_not_none
-from .validators import (
+from pydantic.validators import (
     str_validator,
     constr_length_validator,
     constr_strip_whitespace,

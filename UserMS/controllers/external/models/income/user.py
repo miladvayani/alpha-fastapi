@@ -1,20 +1,17 @@
 from pydantic import BaseModel
 from pydantic import EmailStr
 
-from UserMS.core.hydantic.fields import NationalCode
-from UserMS.core.hydantic.fields import PostalCode
-from UserMS.core.hydantic.fields import StrField
-from UserMS.core.hydantic.fields import EconomicalCode
+from UserMS.core.contrib import fields
 
 
 class UserUpdateIncomeModel(BaseModel):
 
-    first_name: StrField(max_length=70)
-    last_name: StrField(max_length=100)
-    buyer_id: NationalCode
-    economical_code: EconomicalCode = None
+    first_name: fields.StrField(max_length=70)
+    last_name: fields.StrField(max_length=100)
+    buyer_id: fields.NationalCode
+    economical_code: fields.EconomicalCode = None
     email: EmailStr
-    birth_date: StrField()
-    job: StrField() = None
-    buyerpostalcode: PostalCode = None
-    address: StrField(empty=True, max_length=200) = None
+    birth_date: fields.StrField()
+    job: fields.StrField() = None
+    buyerpostalcode: fields.PostalCode = None
+    address: fields.StrField(empty=True, max_length=200) = None

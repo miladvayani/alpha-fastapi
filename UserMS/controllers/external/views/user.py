@@ -1,12 +1,11 @@
-from asyncio import gather
 from fastapi import Request
 from aio_pika import Message
 
-from UserMS import CurrentUser
 from UserMS import Application as root
-from UserMS.core.i18n import _
-from UserMS import ResponseObject as Response
-from UserMS.core.rabbit import RabbitCall
+from UserMS.core.contrib import CurrentUser
+from UserMS.core.contrib import _
+from UserMS.core.contrib import Response
+from UserMS.core.contrib import RabbitCall
 from .. import router
 
 from ..logic.user import *

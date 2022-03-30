@@ -1,8 +1,7 @@
 from fastapi import Request
 
-from UserMS import CurrentUser
-from UserMS.core.i18n import _
-from UserMS import ResponseObject as Response
+from UserMS.core.contrib import CurrentUser
+from UserMS.core.contrib import Response
 from .. import router
 from ..logic.legal import LegalRepository
 from ..logic.user import UserRepository

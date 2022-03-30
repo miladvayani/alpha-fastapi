@@ -1,8 +1,8 @@
 from typing import List
 from UserMS.data.creator import DataLayer
 from UserMS.data.creator import MongoDataLayer
-from UserMS.core.rabbit.exceptions import RabbitException
-from UserMS.core.rabbit.responses import Status
+from UserMS.core.contrib import RabbitException
+from UserMS.core.contrib import Status
 
 
 class UserRepository:

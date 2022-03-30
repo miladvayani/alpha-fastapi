@@ -4,7 +4,21 @@ from pydantic import BaseSettings
 from pymongo import MongoClient
 from pymongo.database import Database
 
-from .core import contrib
+from .core.contrib import Mongo
+from .core.contrib import Redis
+from .core.contrib import babel
+from .core.contrib import cli
+from .core.contrib import RabbitManager
+from .core.contrib import JWTManager
+from .core.contrib import message
+from .core.contrib import request
+from .core.contrib import Response
+from .core.contrib import ZipkinManager
+from .core.contrib import BaseResponse
+from .core.contrib import ZipkinTracerConfig
+from .core.contrib import ZipkinEndpoint
+from .core.contrib import CurrentUser
+from .core.contrib import RabbitManager
 
 
 class Application:
@@ -13,10 +27,10 @@ class Application:
     client: MongoClient = ...
     db: Database = ...
     config: dict = ...
-    jwt: contrib.jwt.JWTManager = ...
-    zipkin: contrib.zipkin.ZipkinManager = ...
-    rabbit_manager: contrib.rabbit.RabbitManager = ...
-    redis: contrib.redis.Redis = ...
+    jwt: JWTManager = ...
+    zipkin: ZipkinManager = ...
+    rabbit_manager: RabbitManager = ...
+    redis: Redis = ...
 
 
 def create_app(config: BaseSettings) -> FastAPI:
@@ -38,7 +52,7 @@ def create_app(config: BaseSettings) -> FastAPI:
     root.app = FastAPI(
         debug=root.config.get("DEBUG", False),
         title="Authentication Service",
-        default_response_class=contrib.response.BaseResponse,
+        default_response_class=BaseResponse,
     )
 
     # Install Middlewares---------------------------------------------------------------
@@ -48,10 +62,10 @@ def create_app(config: BaseSettings) -> FastAPI:
     from .core.middlewares import InternationalizationMiddleware
     from .core.middlewares import ZipkinMiddleware
 
-    root.zipkin = contrib.zipkin.ZipkinManager(
-        configs=contrib.zipkin.ZipkinTracerConfig(
+    root.zipkin = ZipkinManager(
+        configs=ZipkinTracerConfig(
             zipkin_address=root.config["ZIPKIN_ADDRESS"],
-            local_endpoint=contrib.zipkin.ZipkinEndpoint(
+            local_endpoint=ZipkinEndpoint(
                 serviceName=root.config.get("ZIPKIN_SERVICE_NAME"),
                 ipv4="127.0.0.1",
                 port=8080,
@@ -59,8 +73,8 @@ def create_app(config: BaseSettings) -> FastAPI:
             ),
         )
     )
-    root.redis = contrib.redis.Redis(root.config)
-    root.jwt = contrib.jwt.JWTManager(
+    root.redis = Redis(root.config)
+    root.jwt = JWTManager(
         algorithm=root.config["JWT_ALGORITHM"],
         key=root.config["JWT_PUBLIC"],
         verify=True,
@@ -78,10 +92,10 @@ def create_app(config: BaseSettings) -> FastAPI:
     )
     root.app.add_middleware(
         ProxyMiddleware,
-        proxies=[contrib.proxies.request, contrib.proxies.message],
+        proxies=[request, message],
         lookupers=[lambda request: request],
     )
-    root.app.add_middleware(InternationalizationMiddleware, babel=contrib.i18n.babel)
+    root.app.add_middleware(InternationalizationMiddleware, babel=babel)
     root.app.add_middleware(ZipkinMiddleware, manager=root.zipkin, configs=root.config)
 
     # Install Exceptions---------------------------------------------------------------
@@ -102,7 +116,7 @@ def create_app(config: BaseSettings) -> FastAPI:
     root.app.add_exception_handler(Exception, http_500_error_handler)
 
     # Install Plugins
-    root.rabbit_manager = contrib.rabbit.RabbitManager(root.config["BROKER_URL"])
+    root.rabbit_manager = RabbitManager(root.config["BROKER_URL"])
 
     @root.rabbit_manager.declare
     async def declare(channel: Channel):
@@ -113,15 +127,15 @@ def create_app(config: BaseSettings) -> FastAPI:
     # # Startup Factory ------------------------------------------------------------------
     @root.app.on_event("startup")
     async def startup():
-        await contrib.mongo.Mongo(root.config).create_connection()
+        await Mongo(root.config).create_connection()
         connection = await root.rabbit_manager.create_connection()
         channel = await connection.channel()
         queue = await channel.declare_queue(
             root.config["QUEUE_NAME"], durable=True, auto_delete=True
         )
         await root.rabbit_manager.consume(queue=queue)
-        root.db = contrib.mongo.Mongo.db
-        root.client = contrib.mongo.Mongo.client
+        root.db = Mongo.db
+        root.client = Mongo.client
 
     # Install Applications
     from .controllers.external import router
