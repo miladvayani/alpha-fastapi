@@ -2,9 +2,6 @@ from abc import ABC, abstractmethod
 import asyncio
 from datetime import datetime, timedelta
 from typing import Any, Callable, Optional, Union
-
-from aio_pika import Connection
-from aio_pika import Channel
 from aio_pika import Queue
 from aio_pika import IncomingMessage
 from aio_pika import Message

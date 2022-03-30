@@ -3,13 +3,6 @@ from typing import Any, Callable
 from inspect import iscoroutinefunction
 from asyncio import get_event_loop
 from ..i18n import _
-from pydantic.validators import (
-    str_validator,
-    constr_length_validator,
-    constr_strip_whitespace,
-    constr_lower,
-    strict_str_validator,
-)
 
 
 def validate_mobile_number(mobile):

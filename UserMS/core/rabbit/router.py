@@ -1,5 +1,4 @@
-from functools import wraps
-from typing import Callable, List, NamedTuple
+from typing import Callable, NamedTuple
 from aio_pika import IncomingMessage
 from pydantic import BaseModel
 from .responses import RabbitResponse as Response, Status

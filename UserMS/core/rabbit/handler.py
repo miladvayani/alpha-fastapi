@@ -1,4 +1,4 @@
-from typing import Callable, List
+from typing import Callable
 from aio_pika import IncomingMessage
 from json import loads
 

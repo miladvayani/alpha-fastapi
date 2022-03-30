@@ -2,7 +2,6 @@ from typing import Any
 from fastapi.responses import UJSONResponse
 from ..proxies.proxies import message
 from ujson import dumps
-from pydantic.error_wrappers import ValidationError
 
 
 class ResponseObject:

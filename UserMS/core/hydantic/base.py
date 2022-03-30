@@ -1,7 +1,6 @@
 from abc import ABC, abstractclassmethod
 from email.generator import Generator
 from pydantic import BaseConfig, MissingError
-from pydantic.types import _registered
 from pydantic.types import ConstrainedStr
 from pydantic.fields import ModelField
 from pydantic.types import update_not_none

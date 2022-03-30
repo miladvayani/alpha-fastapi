@@ -10,7 +10,6 @@ import bson.binary
 import bson.decimal128
 import bson.int64
 import bson.regex
-from pydantic import BaseConfig
 from pydantic.fields import ModelField
 from pydantic.datetime_parse import parse_datetime
 from pydantic.main import BaseModel
@@ -27,7 +26,6 @@ from .validators import validate_mobile_number
 from .validators import validate_national_code
 from .validators import validate_national_id
 from .validators import validate_phone_number
-from .validators import strict_str_validator
 from .base import BaseConstrainedStr, BaseMultiFieldSelector
 
 

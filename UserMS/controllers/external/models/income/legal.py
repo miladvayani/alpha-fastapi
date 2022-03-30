@@ -1,6 +1,3 @@
-from typing import Optional, Union
-from fastapi import HTTPException
-import requests
 from pydantic import BaseModel, Field, validator
 from UserMS import Application as root
 from UserMS.core.hydantic.fields import ObjectId

@@ -1,6 +1,6 @@
 from json import JSONEncoder
 from typing import Any
-from jwt import InvalidSignatureError, InvalidTokenError, decode
+from jwt import decode
 from jwt import encode
 from jwt.exceptions import ExpiredSignatureError
 from jwt.exceptions import DecodeError
@@ -79,7 +79,7 @@ class JWTManager:
         self,
         payload: Any,
         key: str = None,
-        algorithm: str = "HS256",
+        algorithm: str = None,
         headers: dict = None,
         json_encoder: JSONEncoder = None,
     ) -> str:
@@ -88,7 +88,7 @@ class JWTManager:
         Args:
             payload (Any): jwt payload to get encode.
             key (str, optional): secret key. Defaults to None.
-            algorithm (str, optional): jwt algorithm. Defaults to "HS256".
+            algorithm (str, optional): jwt algorithm. Defaults to None.
             headers (dict, optional): jwt headers for some special validations. Defaults to None.
             json_encoder (JSONEncoder, optional): json encoder interface. Defaults to None.
 

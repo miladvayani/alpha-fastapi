@@ -1,4 +1,3 @@
-from crypt import methods
 from typing import Union
 
 from UserMS.controllers.internal.models.income.user import SetUserIncome

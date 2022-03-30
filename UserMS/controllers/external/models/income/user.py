@@ -1,10 +1,10 @@
-from typing import Optional
-from pydantic import BaseModel, EmailStr, Field, validator
+from pydantic import BaseModel
+from pydantic import EmailStr
 
-from UserMS.core.hydantic.fields import NationalCode, PostalCode
+from UserMS.core.hydantic.fields import NationalCode
+from UserMS.core.hydantic.fields import PostalCode
 from UserMS.core.hydantic.fields import StrField
 from UserMS.core.hydantic.fields import EconomicalCode
-from pydantic import constr
 
 
 class UserUpdateIncomeModel(BaseModel):
