@@ -1,15 +1,18 @@
 from datetime import datetime
 from typing import List, Optional
 from pydantic import BaseModel, EmailStr, Field
-from ..core.hydantic.fields import MobileField, ObjectId, PhoneField
+from ..core.hydantic.fields import MobileField, PhoneField, ObjectId
 from ..core.hydantic.fields import PostalCode
 from ..core.hydantic.fields import StrField
 from ..core.hydantic.fields import EconomicalCode
 from ..core.hydantic.fields import NationalId
+from ..core.hydantic.fields import NationalCode
 
 
 class LegalInfo(BaseModel):
-    id: Optional[ObjectId] = Field(default_factory=ObjectId, alias="_id")
+    id: Optional[ObjectId] = Field(
+        default_factory=lambda: str(ObjectId()), alias="_id", exclude=False
+    )
     organization_name: StrField(max_length=300)
     economical_code: EconomicalCode
     buyer_id: NationalId
@@ -25,11 +28,10 @@ class LegalInfo(BaseModel):
 
 class User(BaseModel):
 
-    id: Optional[ObjectId] = Field(None, alias="_id")
     password: StrField(max_length=100) = None
     first_name: StrField(max_length=70) = None
     last_name: StrField(max_length=100) = None
-    buyer_id: NationalId
+    buyer_id: NationalCode
     is_foreign_national: bool = Field(default=False)
     foreign_national_image: StrField(max_length=200) = None
     mobile_number: MobileField

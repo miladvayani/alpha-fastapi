@@ -104,8 +104,11 @@ def create_app(config: BaseSettings) -> FastAPI:
     from .core.exceptions import http_422_error_handler
     from .core.exceptions import http_duplicate_error_handler
     from .core.exceptions import http_500_error_handler
+    from .core.exceptions import rabbit_mongodb_connection_error_handler
+    from .core.exceptions import rabbit_duplicate_error_handler
     from .core.exceptions import DuplicateKeyError
     from .core.exceptions import HTTPException
+    from .core.exceptions import ConnectionFailure
     from fastapi.exceptions import RequestValidationError
     from starlette.exceptions import HTTPException as StarletteHTTPException
 
@@ -117,6 +120,12 @@ def create_app(config: BaseSettings) -> FastAPI:
 
     # Install Plugins
     root.rabbit_manager = RabbitManager(root.config["BROKER_URL"])
+    root.rabbit_manager.add_exception_hanlder(
+        ConnectionFailure, rabbit_mongodb_connection_error_handler
+    )
+    root.rabbit_manager.add_exception_hanlder(
+        DuplicateKeyError, rabbit_duplicate_error_handler
+    )
 
     @root.rabbit_manager.declare
     async def declare(channel: Channel):
@@ -130,9 +139,10 @@ def create_app(config: BaseSettings) -> FastAPI:
         await Mongo(root.config).create_connection()
         connection = await root.rabbit_manager.create_connection()
         channel = await connection.channel()
-        queue = await channel.declare_queue(
-            root.config["QUEUE_NAME"], durable=True, auto_delete=True
-        )
+        # queue = await channel.declare_queue(
+        #     root.config["QUEUE_NAME"], durable=True, auto_delete=True
+        # )
+        queue = await channel.declare_queue("user_ms_test", durable=True)
         await root.rabbit_manager.consume(queue=queue)
         root.db = Mongo.db
         root.client = Mongo.client

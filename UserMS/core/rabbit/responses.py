@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
+from typing import Any
 
 
 class Status(int, Enum):
@@ -8,6 +9,7 @@ class Status(int, Enum):
     nack = 0
     ack = 1
     reject = 2
+    unhandled = 3
 
 
 @dataclass
@@ -16,6 +18,6 @@ class RabbitResponse:
     Rabbit Response
     """
 
-    status: Status
-    detail: str
-    result: str
+    status: Status = 1
+    detail: str = ""
+    result: Any = None

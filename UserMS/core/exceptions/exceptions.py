@@ -1,9 +1,14 @@
 import ast
+from time import sleep
 from typing import Iterable
 from ..responses.responses import Response
 from ..proxies import message as messages
 from ..i18n import _
+from aio_pika import IncomingMessage
+from ..rabbit.responses import RabbitResponse
+from ..rabbit.responses import Status
 from pymongo.errors import DuplicateKeyError
+from pymongo.errors import ConnectionFailure
 from fastapi import Request
 from fastapi.exceptions import HTTPException, RequestValidationError
 
@@ -13,6 +18,24 @@ async def base_exception_handler(request: Request, e: HTTPException):
     if not get_flashed_messages:
         messages(e.detail)
     return Response(status_code=e.status_code)
+
+
+async def rabbit_duplicate_error_handler(
+    message: IncomingMessage, exc: DuplicateKeyError
+) -> RabbitResponse:
+    await message.reject(requeue=False)
+    errors = [
+        {key: _("This field is duplicate")} for key in exc.details["keyValue"].keys()
+    ]
+    return RabbitResponse(status=Status.reject, detail=str(errors))
+
+
+async def rabbit_mongodb_connection_error_handler(
+    message: IncomingMessage, exc: ConnectionFailure
+) -> RabbitResponse:
+    message.delivery_mode = message.delivery_mode.PERSISTENT
+    await message.nack(requeue=True)
+    return RabbitResponse(status=Status.nack, detail="MongoDB Connection Refuse")
 
 
 async def http_500_error_handler(request: Request, exc: Exception):

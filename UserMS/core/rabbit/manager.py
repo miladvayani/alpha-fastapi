@@ -57,6 +57,9 @@ class RabbitManager(RabbitInterface):
         self.declarations.append(func)
         return wrapper
 
+    def add_exception_hanlder(self, exception: Exception, handler: Callable):
+        self.__handler.add_exception_handler(exception=exception, handler=handler)
+
     async def publish(
         self,
         message: Message,

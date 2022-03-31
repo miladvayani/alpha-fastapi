@@ -1,8 +1,10 @@
 from typing import Union
+from urllib.request import Request
 from fastapi.responses import Response
 from aio_pika import IncomingMessage
 from bson.objectid import ObjectId
-
+from pymongo.errors import DuplicateKeyError
+from pymongo.errors import ConnectionFailure
 from .. import rabbit
 from .. import api
 
@@ -61,3 +63,9 @@ async def update_many_user(
             detail=f"{updated_count} User updated successfully",
         )
     raise RabbitException(Status.reject, "User collection has not any changed!")
+
+
+@rabbit.route("/say/hello")
+async def say_hello(request: Request, message: IncomingMessage):
+    # raise RabbitException(status=Status.nack, detail="Goooo")
+    raise IndexError("Hello")

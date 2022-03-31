@@ -77,20 +77,4 @@ class RabbitRouter:
         message: IncomingMessage,
         request: Request,
     ) -> Response:
-
-        try:
-            response: Response = await func(request, message=message)
-            if response.status == Status.ack:
-                message.ack()
-            elif response.status == Status.nack:
-                message.nack()
-            elif response.status == Status.reject:
-                message.reject()
-        except RabbitException as err:
-            if err.status == Status.nack:
-                message.nack()
-            else:
-                message.reject(requeue=False)
-            response.status = err.status
-            response.detail = err.detail
-        return response
+        return await func(request, message=message)

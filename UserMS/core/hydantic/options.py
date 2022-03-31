@@ -31,4 +31,4 @@ def create_unset_optional_model(t_model: BaseModel, data: dict) -> dict:
         pass
 
     model: BaseModel = AllOptional(**data)
-    return model.dict(exclude_unset=True)
+    return model.dict(by_alias=True, exclude_unset=True)

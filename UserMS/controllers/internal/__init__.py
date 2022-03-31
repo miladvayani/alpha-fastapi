@@ -3,6 +3,6 @@ from fastapi import APIRouter
 
 
 rabbit = root.rabbit_manager.router
-api = APIRouter(prefix="/v2/internal", tags=["Internal"])
+api = APIRouter(prefix="/internal", tags=["Internal"])
 
 from .views.user import *
