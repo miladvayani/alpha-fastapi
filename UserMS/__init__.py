@@ -139,10 +139,7 @@ def create_app(config: BaseSettings) -> FastAPI:
         await Mongo(root.config).create_connection()
         connection = await root.rabbit_manager.create_connection()
         channel = await connection.channel()
-        # queue = await channel.declare_queue(
-        #     root.config["QUEUE_NAME"], durable=True, auto_delete=True
-        # )
-        queue = await channel.declare_queue("user_ms_test", durable=True)
+        queue = await channel.declare_queue(root.config["QUEUE_NAME"], durable=True)
         await root.rabbit_manager.consume(queue=queue)
         root.db = Mongo.db
         root.client = Mongo.client
