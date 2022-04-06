@@ -10,16 +10,14 @@ from ..core.hydantic.fields import NationalCode
 
 
 class LegalInfo(BaseModel):
-    id: Optional[ObjectId] = Field(
-        default_factory=lambda: str(ObjectId()), alias="_id", exclude=False
-    )
+    id: Optional[ObjectId] = Field(default_factory=ObjectId, alias="_id", exclude=False)
     organization_name: StrField(max_length=300)
     economical_code: EconomicalCode
     buyer_id: NationalId
     registration_number: StrField(max_length=10)
     city_name: StrField(max_length=150)
     province_name: StrField(max_length=150)
-    phone: PhoneField
+    phone: PhoneField = None
     submit_date: datetime = Field(default_factory=datetime.utcnow)
     buyerpostalcode: PostalCode
     address: StrField(max_length=200)

@@ -2,6 +2,8 @@ from fastapi import Request
 
 from UserMS.core.contrib import CurrentUser
 from UserMS.core.contrib import Response
+from UserMS.core.contrib import validators
+from UserMS.core.contrib import _
 from .. import router
 from ..logic.legal import LegalRepository
 from ..logic.user import UserRepository
@@ -12,6 +14,7 @@ from fastapi import Path
 
 @router.post("/legal/", response_model=AddLegalResponseModel)
 async def add_legal(request: Request, legal: AddLegalIncomeModel):
+    await validators.validate_province_city(legal.province_name, legal.city_name)
     current_user: CurrentUser = request.state.user
     user: dict = await UserRepository().get_user(user_id=current_user.id)
     repository: LegalRepository = LegalRepository()
@@ -23,6 +26,7 @@ async def add_legal(request: Request, legal: AddLegalIncomeModel):
 
 @router.put("/legal/")
 async def update_legal(request: Request, legal: UpdateLegalIncomeModel):
+    await validators.validate_province_city(legal.province_name, legal.city_name)
     current_user: CurrentUser = request.state.user
     repository: LegalRepository = LegalRepository()
     user: dict = await UserRepository().get_user(user_id=current_user.id)

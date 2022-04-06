@@ -1,8 +1,7 @@
 import phonenumbers
-from typing import Any, Callable
-from inspect import iscoroutinefunction
-from asyncio import get_event_loop
 from ..i18n import _
+from ..mongo import Mongo
+from fastapi import HTTPException
 
 
 def validate_mobile_number(mobile):
@@ -100,8 +99,28 @@ def validate_economical_code(ec):
     return ec
 
 
-def async_validate(value: Any, validator: Callable, *args, **kwargs) -> Any:
-    if iscoroutinefunction(validator):
-        loop = get_event_loop()
-        return loop.create_task(validator(value, *args, **kwargs))
-    return validator(value, *args, **kwargs)
+async def validate_province_city(province_name, city_name):
+    result = list()
+    pipeline = [
+        {"$match": {"name": province_name}},
+        {
+            "$lookup": {
+                "from": "city",
+                "localField": "code",
+                "foreignField": "province_code",
+                "as": "city",
+            }
+        },
+        {"$match": {"city": {"$elemMatch": {"name": city_name}}}},
+    ]
+    documents = Mongo.client["SystemTablesDB"]["province"].aggregate(pipeline)
+    async for doc in documents:
+        result.append(doc)
+    if not result:
+        raise HTTPException(
+            status_code=400,
+            detail={
+                "city_name": _("Invalid city"),
+                "province_name": _("Invalid province"),
+            },
+        )

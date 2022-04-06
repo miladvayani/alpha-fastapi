@@ -116,19 +116,22 @@ class Handler:
         request: Request,
         message: IncomingMessage,
     ) -> Response:
-        response = Response()
         try:
             route: dict[dict[str, Callable], dict[str, BaseModel]] = self.router.find(
                 url=request.path, method=request.method
             )
             view = request.view = route["func"]
             response = await self.router.call(view, message, request)
-            if response.status == Status.ack:
-                await message.ack()
-            elif response.status == Status.nack:
-                await message.nack(requeue=False)
-            elif response.status == Status.reject:
-                await message.reject(requeue=False)
+            if response is not None:
+                if response.status == Status.ack:
+                    await message.ack()
+                elif response.status == Status.nack:
+                    await message.nack(requeue=False)
+                elif response.status == Status.reject:
+                    await message.reject(requeue=False)
+            else:
+                response = Response()
+            return response
         except (RabbitException, MethodNotAllowed, UrlNotFound, NotFound) as err:
             if err.status == Status.nack:
                 await message.nack(requeue=False)
@@ -136,6 +139,7 @@ class Handler:
                 await message.reject(requeue=False)
             response.status = err.status
             response.detail = err.detail
+            return response
         except Exception as exp:
             if type(exp) in self.exception_handlers:
                 exception_handler = self.exception_handlers[type(exp)]
@@ -146,4 +150,4 @@ class Handler:
             response.status = 3
             response.detail = "Internal Server Error"
             response.result = {"error": exp}
-        return response
+            return response

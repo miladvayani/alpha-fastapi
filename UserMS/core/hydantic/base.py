@@ -12,7 +12,6 @@ from pydantic.validators import (
     strict_str_validator,
 )
 from typing import Any, Callable, Dict, List
-from .validators import async_validate
 
 
 class BaseConstrainedStr(ConstrainedStr):
@@ -76,7 +75,7 @@ class BaseConstrainedStr(ConstrainedStr):
         else:
             pass
         if cls.validator:
-            return async_validate(result, cls.validator)
+            return cls.validator(result)
         return result
 
 
