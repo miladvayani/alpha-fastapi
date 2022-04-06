@@ -1,5 +1,3 @@
-# try:
-
 from .jwt import JWTManager
 from .jwt import token_required
 
@@ -52,14 +50,4 @@ from .proxies import request
 from .proxies import message
 
 from .proxies import CurrentUser
-
-# except ImportError as err:
-#     from subprocess import run
-#     from platform import python_version
-
-#     pv = python_version().split(".")
-#     PY: int = float(pv[0] + "." + pv[1])
-#     if PY > 3.7:
-#         run(["pip", "install", f"{err.name}"])
-#     else:
-#         raise SystemError("Please upgrade your python to version 3.7+")
+from . import tools as test_tools
