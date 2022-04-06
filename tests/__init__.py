@@ -5,41 +5,36 @@ from unittest.mock import MagicMock
 from unittest.mock import Mock
 from pytest import fixture
 from pytest import mark
-
+from pytest import raises
 from configs import Development as Test
 from UserMS.core.contrib import test_tools
+from UserMS.core.contrib import babel
 
 async_mark = mark.asyncio
 parameters = mark.parametrize
-
 
 from UserMS import create_app as setup
 
 # Setup the project
 setup(Test())
-
+babel.locale = "en"
 from UserMS.data.implements import MongoUserDataLayer
 
 
-class ExternalLegalLogicMocks(test_tools.BaseMockCreator):
+class DataLayerLogicMocks(test_tools.BaseMockCreator):
 
-    path: str = "UserMS.controllers.external.logic.legal."
-
-    def __init__(self) -> None:
-        self.DataLayer: MongoUserDataLayer = ...
-
-
-class ExternalUserLogicMocks(test_tools.BaseMockCreator):
-
-    path: str = "UserMS.controllers.external.logic.user."
+    path: str = "UserMS.data.implements."
 
     def __init__(self) -> None:
-        self.DataLayer: MongoUserDataLayer = ...
+        self.MongoUserDataLayer: MongoUserDataLayer = ...
+
+    def create_mocks(self):
+        super().create_mocks()
+        self.MongoUserDataLayer: MongoUserDataLayer = self.MongoUserDataLayer()
 
 
 mock_manager: test_tools.MockManager[
-    Tuple[ExternalLegalLogicMocks, ExternalUserLogicMocks]
+    Tuple[DataLayerLogicMocks]
 ] = test_tools.MockManager()
 
-legal_mocks: int = 0
-user_mocks: int = 1
+data_layer_mocks: int = 0

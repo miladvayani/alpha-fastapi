@@ -1,16 +1,14 @@
 from . import fixture
-from . import patch
 from . import mock_manager
-from . import ExternalLegalLogicMocks
-from . import ExternalUserLogicMocks
+from . import DataLayerLogicMocks
 
 
-def start_app():
-    print("\n", "*" * 100, "\n")
+def setup_app():
+    # print("\n", "*" * 100, "\n")
     print("Tests Started")
     yield
 
-    print("\n", "*" * 100, "\n")
+    # print("\n", "*" * 100, "\n")
     print("Tests Finished")
 
 
@@ -18,7 +16,6 @@ def start_app():
 def mocks():
     mock_manager.reset()
 
-    mock_manager.add_creator(ExternalLegalLogicMocks)
-    mock_manager.add_creator(ExternalUserLogicMocks)
+    mock_manager.add_creator(DataLayerLogicMocks)
 
     mock_manager.build()
