@@ -6,6 +6,7 @@ from UserMS.core.contrib import CurrentUser
 from UserMS.core.contrib import _
 from UserMS.core.contrib import Response
 from UserMS.core.contrib import RabbitCall
+from UserMS.core.contrib import validators
 from .. import router
 
 from ..logic.user import *
@@ -26,6 +27,7 @@ async def get_user(request: Request):
 
 @router.put("/user/", status_code=201)
 async def update_user(request: Request, data: UserUpdateIncomeModel):
+    await validators.validate_province_city(data.province_name, data.city_name)
     current_user: CurrentUser = request.state.user
     repository: UserRepository = UserRepository()
     user: dict = await repository.get_user(user_id=current_user.id)

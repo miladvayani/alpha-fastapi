@@ -341,3 +341,12 @@ class MultiNationlSelector(BaseMultiFieldSelector):
 
 
 NationlCodeId = MultiNationlSelector(NationalCode, NationalId)
+
+
+RegistrationNumber = StrField(
+    alphabetic=False,
+    example="12345",
+    examples=["43211", "11111"],
+    max_length=5,
+    min_length=5,
+)

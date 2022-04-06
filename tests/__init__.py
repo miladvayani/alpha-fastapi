@@ -3,7 +3,6 @@ from unittest.mock import patch
 from unittest.mock import AsyncMock
 from unittest.mock import MagicMock
 from unittest.mock import Mock
-from faker import Faker
 from pytest import fixture
 from pytest import mark
 
@@ -14,7 +13,6 @@ async_mark = mark.asyncio
 parameters = mark.parametrize
 
 
-faker = Faker()
 from UserMS import create_app as setup
 
 # Setup the project

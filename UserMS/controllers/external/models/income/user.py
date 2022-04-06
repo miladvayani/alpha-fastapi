@@ -10,8 +10,13 @@ class UserUpdateIncomeModel(BaseModel):
     last_name: fields.StrField(max_length=100)
     buyer_id: fields.NationalCode
     economical_code: fields.EconomicalCode = None
-    email: EmailStr
+    email: EmailStr = None
     birth_date: fields.StrField()
-    job: fields.StrField() = None
+    job: fields.StrField()
     buyerpostalcode: fields.PostalCode = None
-    address: fields.StrField(empty=True, max_length=200) = None
+    city_name: fields.StrField(
+        numeric=False,
+        max_length=150,
+    )
+    province_name: fields.StrField(numeric=False, max_length=150)
+    address: fields.StrField(max_length=200)

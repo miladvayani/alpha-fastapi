@@ -7,7 +7,7 @@ class AddLegalIncomeModel(BaseModel):
     organization_name: fields.StrField(max_length=300)
     economical_code: fields.EconomicalCode
     buyer_id: fields.NationalId
-    registration_number: fields.StrField(alphabetic=False, max_length=10)
+    registration_number: fields.RegistrationNumber
     city_name: fields.StrField(
         numeric=False,
         max_length=150,
@@ -23,7 +23,7 @@ class UpdateLegalIncomeModel(BaseModel):
     organization_name: fields.StrField(max_length=300) = None
     economical_code: fields.EconomicalCode = None
     buyer_id: fields.NationalId = None
-    registration_number: fields.StrField(alphabetic=False, max_length=10) = None
+    registration_number: fields.RegistrationNumber = None
     city_name: fields.StrField(numeric=False, max_length=150) = None
     province_name: fields.StrField(numeric=False, max_length=150) = None
     phone: fields.PhoneField = None

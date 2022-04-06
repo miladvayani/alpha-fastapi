@@ -40,6 +40,7 @@ class LegalRepository:
                 else:
                     found = True
             elif legal["buyer_id"] == new_buyer_id:
+                print("hello")
                 raise HTTPException(400, _("Legal info already exists"))
         if not found:
             raise HTTPException(404, _("Legal info not found"))

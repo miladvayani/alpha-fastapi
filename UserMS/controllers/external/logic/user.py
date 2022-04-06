@@ -26,8 +26,7 @@ class UserRepository:
     async def update_user(self, user: dict, data: UserUpdateIncomeModel) -> None:
 
         document: dict = data.dict()
-        if data.job:
-            await self.validate_job(job=data.job)
+        await self.validate_job(job=data.job)
         for key, value in document.items():
             user[key] = value
         await self.layer.update_user(user_id=user["_id"], document=user)
