@@ -43,4 +43,4 @@ class User(BaseModel):
     address: StrField(max_length=200) = None
     is_used: bool = Field(default=False)
     is_superuser: bool = Field(default=False)
-    submit_date: datetime = Field(default=datetime.utcnow())
+    submit_date: datetime = Field(default_factory=datetime.utcnow)

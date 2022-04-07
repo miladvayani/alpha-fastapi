@@ -143,7 +143,7 @@ async def test_update_one_user():
     update_user = mock_manager.mocks[
         data_layer_mocks
     ].MongoUserDataLayer.update_user = AsyncMock()
-    update_user.return_value = (None, 0)
-    
-    # Action 1
+    update_user.return_value = [None, 0]
 
+    # Action 1
+    repository
