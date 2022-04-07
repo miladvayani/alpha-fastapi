@@ -24,7 +24,6 @@ from .exceptions import ConfigValueType
 
 
 class Options(Generic[_T]):
-
     def __init__(self, **kwargs: Type[_T]) -> None:
         self.options: Type[_T] = kwargs
 
@@ -33,20 +32,23 @@ class Options(Generic[_T]):
 
 
 class Config(dict):
-    
     @overload
     def __init__(self, strict_mode: bool) -> None:
         """
-            Config will need to add key values
+        Config will need to add key values
         """
 
     @overload
-    def __init__(self, properties: Optional[Properties] = None, *, strict_mode: bool) -> None:
+    def __init__(
+        self, properties: Optional[Properties] = None, *, strict_mode: bool
+    ) -> None:
         """
-            Config will catch the data from `Properties`
+        Config will catch the data from `Properties`
         """
 
-    def __init__(self, properties: Optional[Properties] = None, strict_mode: bool = True) -> None:
+    def __init__(
+        self, properties: Optional[Properties] = None, strict_mode: bool = True
+    ) -> None:
         self.strict_mode: bool = strict_mode
         if properties:
             for key, value in properties.decompose().items():
@@ -54,41 +56,45 @@ class Config(dict):
         super().__init__()
 
     def __getitem__(self, __k: _KT) -> _VT:
-        if isinstance(__k , str):
+        if isinstance(__k, str):
             return super().__getitem__(__k)
-        raise ConfigKeyType(
-            __k
-            ) from Exception
+        raise ConfigKeyType(__k) from Exception
 
     def __setitem__(self, __k: _KT, v: _VT) -> None:
         if self.strict_mode:
-            if isinstance(v, (
-                    str,
-                    int,
-                    tuple,
-                    dict,
-                    list,
-                    set,
-                    float,
-                    )
-                ) or v is None:
+            if (
+                isinstance(
+                    v,
+                    (
+                        str,
+                        int,
+                        tuple,
+                        dict,
+                        list,
+                        set,
+                        float,
+                    ),
+                )
+                or v is None
+            ):
                 pass
-            else:    
+            else:
                 raise ConfigValueType(v)
         return super().__setitem__(__k, v)
 
-class Properties(object):
 
-    def __init__(self, 
-            locale: Union[str, Sequence[str] , Dict[str, int , float] , None] = None, 
-            providers: Union[List[str] , None] = None, 
-            generator: Union[Generator , None] = None, 
-            includes: Union[List[str] , None] = None, 
-            use_weighting: bool = True, 
-            randomize: bool = True, 
-            jsonifier: ModuleType = json,
-            **config: Any
-        ) -> None:
+class Properties(object):
+    def __init__(
+        self,
+        locale: Union[str, Sequence[str], Dict[str, int, float], None] = None,
+        providers: Union[List[str], None] = None,
+        generator: Union[Generator, None] = None,
+        includes: Union[List[str], None] = None,
+        use_weighting: bool = True,
+        randomize: bool = True,
+        jsonifier: ModuleType = json,
+        **config: Any,
+    ) -> None:
         self.locale = locale
         self.providers = providers
         self.generator = generator

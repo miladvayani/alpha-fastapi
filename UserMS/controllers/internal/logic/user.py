@@ -22,9 +22,9 @@ class UserRepository:
     async def set_user_by_mobile(self, mobile_number: str) -> dict:
         user: dict = await self.layer.get_user_by_mobile(mobile_number)
         if user:
-            return user
-        new_user = await self.layer.insert_user(dict(mobile_number=mobile_number))
-        return new_user
+            return user["_id"]
+        new_user_id = await self.layer.insert_user(dict(mobile_number=mobile_number))
+        return new_user_id
 
     async def update_one_user(self, user_id: str, new_data: dict) -> bool:
         upserted_id, matched_count = await self.layer.update_user(

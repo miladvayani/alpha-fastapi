@@ -25,13 +25,14 @@ async def get_user(request: RabbitRequest, message: IncomingMessage) -> Response
     return result
 
 
-@api.post("/user", response_model=SetUserOutcome)
+@api.post("/user")
 async def set_user(user_info: SetUserIncome):
     repository = UserRepository()
-    user: dict = await repository.set_user_by_mobile(
+    user_id: dict = await repository.set_user_by_mobile(
         mobile_number=user_info.mobile_number
     )
-    return {"_id": user["_id"]}
+    print(user_id)
+    return {"_id": str(user_id)}
 
 
 @rabbit.route("/user/one", method="PUT")

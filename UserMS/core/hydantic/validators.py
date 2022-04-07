@@ -2,6 +2,7 @@ import phonenumbers
 from ..i18n import _
 from ..mongo import Mongo
 from fastapi import HTTPException
+from bson import ObjectId
 
 
 def validate_mobile_number(mobile):
@@ -99,7 +100,7 @@ def validate_economical_code(ec):
     return ec
 
 
-async def validate_province_city(province_name, city_name):
+async def validate_province_city(dbname: str, province_name: str, city_name: str):
     result = list()
     pipeline = [
         {"$match": {"name": province_name}},
@@ -113,7 +114,7 @@ async def validate_province_city(province_name, city_name):
         },
         {"$match": {"city": {"$elemMatch": {"name": city_name}}}},
     ]
-    documents = Mongo.client["SystemTablesDB"]["province"].aggregate(pipeline)
+    documents = Mongo.client[dbname]["province"].aggregate(pipeline)
     async for doc in documents:
         result.append(doc)
     if not result:
@@ -124,3 +125,112 @@ async def validate_province_city(province_name, city_name):
                 "province_name": _("Invalid province"),
             },
         )
+
+
+async def validate_group(dbname: str, group_id):
+    pipeline = [
+        {"$match": {"_id": ObjectId(group_id)}},
+        {
+            "$lookup": {
+                "from": "group",
+                "localField": "parent_id",
+                "foreignField": "_id",
+                "as": "parent",
+            }
+        },
+        {
+            "$project": {
+                "_id": 0,
+                "sub_group_name": "name",
+                "group_name": {"$first": "$parent.name"},
+            }
+        },
+    ]
+    documents = Mongo.client[dbname]["group"].aggregate(pipeline)
+    async for doc in documents:
+        return doc
+
+
+async def validate_job(dbname: str, job_name):
+    result = list()
+    pipeline = [{"$match": {"name": job_name}}]
+    documents = Mongo.client[dbname]["job"].aggregate(pipeline)
+    async for doc in documents:
+        result.append(doc)
+    if not result:
+        raise HTTPException(400, detail=_("Selected Job Not Found"))
+
+
+async def validate_bank(dbname: str, bank_name):
+    result = list()
+    pipeline = [{"$match": {"name": bank_name}}]
+    documents = Mongo.client[dbname]["bank"].aggregate(pipeline)
+    async for doc in documents:
+        result.append(doc)
+    if result:
+        result = {"name": result[0].get("name"), "code": result[0].get("code")}
+    return result
+
+
+async def validate_main_unit(dbname: str, unit_name):
+    result = list()
+    pipeline = [{"$match": {"name": unit_name}}]
+    documents = Mongo.client[dbname]["mainUnit"].aggregate(pipeline)
+    async for doc in documents:
+        result.append(doc)
+    if result:
+        result = {"name": result[0].get("name"), "code": result[0].get("code")}
+    return result
+
+
+async def validate_imt_detail_commodity(dbname: str, imt_id):
+    result = list()
+    pipeline = [{"$match": {"_id": ObjectId(imt_id)}}]
+    documents = Mongo.client[dbname]["imtCommodityDetail"].aggregate(pipeline)
+    async for doc in documents:
+        result.append(doc)
+    if result:
+        result = {
+            "name": result[0].get("name"),
+            "code": result[0].get("code"),
+            "unit_code": result[0].get("unit_code"),
+            "unit_name": result[0].get("unit_name"),
+        }
+    return result
+
+
+async def validate_imt_detail_service(dbname: str, imt_id):
+    result = list()
+    pipeline = [{"$match": {"_id": ObjectId(imt_id)}}]
+    documents = Mongo.client[dbname]["imtServiceDetail"].aggregate(pipeline)
+    async for doc in documents:
+        result.append(doc)
+    if result:
+        result = {"name": result[0].get("persian_name"), "code": result[0].get("code")}
+    return result
+
+
+async def get_guild_info(dbname: str, guild_id):
+    guild_id = ObjectId(guild_id)
+    doc = await Mongo.client[dbname]["guild"].find_one({"_id": guild_id})
+    doc["_id"] = str(doc["_id"])
+    return doc
+
+
+async def get_group_by_parent_id(dbname: str, parent_id):
+    result = list()
+    pipeline = [
+        {"$match": {"parent_id": ObjectId(parent_id)}},
+        {"$project": {"_id": 0}},
+    ]
+    documents = Mongo.client[dbname]["group"].aggregate(pipeline)
+    async for doc in documents:
+        result.append(doc)
+    return result
+
+
+async def get_country_by_name(dbname: str, name: str):
+    document = await Mongo.client[dbname]["group"].find_one({"name": name})
+    if document:
+        document["_id"] = str(document["_id"])
+    return document

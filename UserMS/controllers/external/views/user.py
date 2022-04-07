@@ -31,7 +31,7 @@ async def update_user(request: Request, data: UserUpdateIncomeModel):
     current_user: CurrentUser = request.state.user
     repository: UserRepository = UserRepository()
     user: dict = await repository.get_user(user_id=current_user.id)
-    await repository.update_user(user=user, data=data)
+    await repository.update_user(user=user, data=data.dict())
     await root.rabbit_manager.publish(
         Message(
             RabbitCall(

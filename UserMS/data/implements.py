@@ -30,13 +30,12 @@ class MongoUserDataLayer(UserDataLayer):
     async def get_user_by_mobile(self, mobile: str) -> dict:
         return await root.db[self.collection].find_one({"mobile_number": mobile})
 
-    async def insert_user(self, data: dict) -> dict:
+    async def insert_user(self, data: dict) -> ObjectId:
         document: User = self.to_model(data)
         result: InsertOneResult = await root.db[self.collection].insert_one(
             document=document.dict(by_alias=True)
         )
-        document.id = result.inserted_id
-        return document.dict(by_alias=True)
+        return result.inserted_id
 
     async def update_user(
         self, user_id: Union[ObjectId, str], document: dict

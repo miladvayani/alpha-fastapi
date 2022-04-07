@@ -10,15 +10,14 @@ from configs import Development as Test
 from UserMS.core.contrib import test_tools
 from UserMS.core.contrib import babel
 
-async_mark = mark.asyncio
-parameters = mark.parametrize
-
+# Setup the project
 from UserMS import create_app as setup
 
-# Setup the project
 setup(Test())
 babel.locale = "en"
+# Mock Lists
 from UserMS.data.implements import MongoUserDataLayer
+import requests
 
 
 class DataLayerLogicMocks(test_tools.BaseMockCreator):
@@ -33,8 +32,9 @@ class DataLayerLogicMocks(test_tools.BaseMockCreator):
         self.MongoUserDataLayer: MongoUserDataLayer = self.MongoUserDataLayer()
 
 
+async_mark = mark.asyncio
+parameters = mark.parametrize
 mock_manager: test_tools.MockManager[
     Tuple[DataLayerLogicMocks]
 ] = test_tools.MockManager()
-
 data_layer_mocks: int = 0

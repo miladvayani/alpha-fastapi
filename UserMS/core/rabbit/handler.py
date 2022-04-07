@@ -67,6 +67,7 @@ class Handler:
         ):
             request: Request = Request()
             body: dict = self.deserialize(message.body.decode("utf-8"))
+            print(body)
             request.body = body["data"]
             request.url = body["url"]
             request.method = body["method"]

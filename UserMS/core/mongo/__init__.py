@@ -1,9 +1,11 @@
 from motor.motor_asyncio import AsyncIOMotorClient
+from motor.core import AgnosticClient
+from motor.core import AgnosticDatabase
 
 
 class Mongo:
-    client = None
-    db = None
+    client: AgnosticClient = None
+    db: AgnosticDatabase = None
 
     def __init__(self, configs: dict) -> None:
         """Mongo driver manager
