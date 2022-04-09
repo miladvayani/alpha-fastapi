@@ -4,12 +4,12 @@ from UserMS.core.contrib import CurrentUser
 from UserMS.core.contrib import Response
 from UserMS.core.contrib import validators
 from UserMS.core.contrib import _
+from UserMS.core.contrib import fields
 from .. import router
 from ..logic.legal import LegalRepository
 from ..logic.user import UserRepository
 from ..models.income.legal import *
 from ..models.outcome.legal import *
-from fastapi import Path
 
 
 @router.post("/legal/", response_model=AddLegalResponseModel)
@@ -41,7 +41,7 @@ async def update_legal(request: Request, legal: UpdateLegalIncomeModel):
 
 
 @router.delete("/legal/{legal_id}")
-async def delete_legal(request: Request, legal_id: str = Path(..., max_length=24)):
+async def delete_legal(request: Request, legal_id: fields.ObjectId):
     current_user: CurrentUser = request.state.user
     repository: LegalRepository = LegalRepository()
     user: dict = await UserRepository().get_user(user_id=current_user.id)
