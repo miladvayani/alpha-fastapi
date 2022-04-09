@@ -41,7 +41,6 @@ class MongoUserDataLayer(UserDataLayer):
         self, user_id: Union[ObjectId, str], document: dict
     ) -> List[ObjectId, int]:
         user = create_unset_optional_model(User, document)
-        print(user)
         result: UpdateResult = await root.db[self.collection].update_one(
             {"_id": ObjectId(user_id)},
             {"$set": user},

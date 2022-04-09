@@ -36,6 +36,4 @@ class UserRepository:
 
     async def update_bulk_user(self, query, new_data: dict) -> int:
         result = await self.layer.update_bulk_user(query=query, document=new_data)
-        if result.modified_count > 0 and result.modified_count == 0:
-            return result.modified_count
-        return 0
+        return result.modified_count

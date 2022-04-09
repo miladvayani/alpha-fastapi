@@ -1,14 +1,10 @@
-from typing import List
-
-
 from . import mock_manager
 from . import AsyncMock
-from . import Mock
 from . import async_mark
 from . import data_layer_mocks
 from . import raises
 from . import patch
-
+from .data import fake_user
 from UserMS.controllers.external.logic.user import UserRepository
 from UserMS.controllers.internal.logic.user import (
     UserRepository as InternalUserRepository,
@@ -132,7 +128,7 @@ async def test_set_user_by_mobile():
     # Action 2
     result = await repository.set_user_by_mobile("1111111111")
     # Assert 2
-    assert "_id" in result
+    assert isinstance(result, ObjectId)
     assert not insert_user.called
 
 
@@ -144,6 +140,17 @@ async def test_update_one_user():
         data_layer_mocks
     ].MongoUserDataLayer.update_user = AsyncMock()
     update_user.return_value = [None, 0]
-
+    user_id = fake_user["_id"]
     # Action 1
-    repository
+    result = await repository.update_one_user(user_id=user_id, new_data=fake_user)
+    # Assert 1
+    assert result is False
+    assert update_user.called
+
+    # Setup 2
+    update_user.reset_mock()
+    update_user.return_value = [ObjectId(), 1]
+    # Action 2
+    result = await repository.update_one_user(user_id=user_id, new_data=fake_user)
+    # Assert 2
+    assert result is True
