@@ -121,6 +121,7 @@ class LegalRepository:
                 if legal["is_used"]:
                     raise HTTPException(400, _("Legal info in use"))
                 found = True
+                break
         if not found:
             raise HTTPException(404, _("Legal info not found"))
 
