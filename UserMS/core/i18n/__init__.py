@@ -82,7 +82,7 @@ class Babel(object):
                 Babel.__module_name__,
                 "update",
                 "-i",
-                BABEL_DOMAIN,
+                BABEL_MESSAGE_POT_FILE,
                 "-d",
                 watch_dir or BABEL_TRANSLATION_DIRECTORIES,
             ]

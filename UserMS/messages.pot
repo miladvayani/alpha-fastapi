@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-03-15 14:25+0330\n"
+"POT-Creation-Date: 2022-04-09 10:03+0430\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,44 +17,93 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: UserMS/controllers/external/user/repository.py:16
+#: UserMS/controllers/external/logic/legal.py:16
+msgid "Please complete your personal information first"
+msgstr ""
+
+#: UserMS/controllers/external/logic/legal.py:24
+#: UserMS/controllers/external/logic/legal.py:43
+msgid "Legal info already exists"
+msgstr ""
+
+#: UserMS/controllers/external/logic/legal.py:39
+#: UserMS/controllers/external/logic/legal.py:59
+msgid "Legal info in use"
+msgstr ""
+
+#: UserMS/controllers/external/logic/legal.py:45
+#: UserMS/controllers/external/logic/legal.py:61
+msgid "Legal info not found"
+msgstr ""
+
+#: UserMS/controllers/external/logic/user.py:19
 msgid "No Such User Exists"
 msgstr ""
 
+#: UserMS/controllers/external/views/legal.py:24
+msgid "Legal info added successfully"
+msgstr ""
+
+#: UserMS/controllers/external/views/legal.py:40
+msgid "Legal info updated successfully"
+msgstr ""
+
+#: UserMS/controllers/external/views/legal.py:53
+msgid "Legal info deleted successfully"
+msgstr ""
+
+#: UserMS/controllers/external/views/user.py:51
+msgid "Your info updated successfully"
+msgstr ""
+
 #: UserMS/core/exceptions/exceptions.py:28
+#: UserMS/core/exceptions/exceptions.py:50
 msgid "This field is duplicate"
 msgstr ""
 
-#: UserMS/core/hydantic/validators.py:10 UserMS/core/hydantic/validators.py:12
-#: UserMS/core/hydantic/validators.py:14 UserMS/core/hydantic/validators.py:16
+#: UserMS/core/hydantic/fields.py:51
+msgid "invalid ObjectId specified"
+msgstr ""
+
+#: UserMS/core/hydantic/fields.py:201
+msgid "datetime objects must be naive (no timezone info)"
+msgstr ""
+
+#: UserMS/core/hydantic/validators.py:12 UserMS/core/hydantic/validators.py:14
+#: UserMS/core/hydantic/validators.py:16 UserMS/core/hydantic/validators.py:18
 msgid "Mobile Number is Invalid"
 msgstr ""
 
-#: UserMS/core/hydantic/validators.py:23 UserMS/core/hydantic/validators.py:25
-#: UserMS/core/hydantic/validators.py:27 UserMS/core/hydantic/validators.py:29
+#: UserMS/core/hydantic/validators.py:26 UserMS/core/hydantic/validators.py:28
+#: UserMS/core/hydantic/validators.py:30 UserMS/core/hydantic/validators.py:32
 msgid "Phone Number is Invalid"
 msgstr ""
 
-#: UserMS/core/hydantic/validators.py:37 UserMS/core/hydantic/validators.py:41
-#: UserMS/core/hydantic/validators.py:46 UserMS/core/hydantic/validators.py:56
-#: UserMS/core/hydantic/validators.py:59
+#: UserMS/core/hydantic/validators.py:41 UserMS/core/hydantic/validators.py:45
+#: UserMS/core/hydantic/validators.py:50 UserMS/core/hydantic/validators.py:60
+#: UserMS/core/hydantic/validators.py:63
 msgid "Invalid Buyer id"
 msgstr ""
 
-#: UserMS/core/hydantic/validators.py:64 UserMS/core/hydantic/validators.py:68
-#: UserMS/core/hydantic/validators.py:82
+#: UserMS/core/hydantic/validators.py:69 UserMS/core/hydantic/validators.py:73
+#: UserMS/core/hydantic/validators.py:87
 msgid "National ID is Invalid"
 msgstr ""
 
-#: UserMS/core/hydantic/validators.py:87 UserMS/core/hydantic/validators.py:91
-#: UserMS/core/hydantic/validators.py:93
+#: UserMS/core/hydantic/validators.py:93 UserMS/core/hydantic/validators.py:97
+#: UserMS/core/hydantic/validators.py:99
 msgid "Economical Code is Invalid"
 msgstr ""
 
-#: UserMS/core/hydantic/validators.py:102
-#: UserMS/core/hydantic/validators.py:104
-#: UserMS/core/hydantic/validators.py:107
-#: UserMS/core/hydantic/validators.py:109
-msgid "Invalid Code"
+#: UserMS/core/hydantic/validators.py:124
+msgid "Invalid city"
+msgstr ""
+
+#: UserMS/core/hydantic/validators.py:125
+msgid "Invalid province"
+msgstr ""
+
+#: UserMS/core/hydantic/validators.py:161
+msgid "Selected Job Not Found"
 msgstr ""
 
