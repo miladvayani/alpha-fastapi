@@ -4,6 +4,7 @@ from UserMS.data.creator import DataLayer
 from UserMS.data.creator import MongoDataLayer
 from UserMS.core.contrib import RabbitException
 from UserMS.core.contrib import Status
+from pymongo.errors import DuplicateKeyError
 
 
 class UserRepository:
@@ -50,11 +51,16 @@ class UserRepository:
         Returns:
             ObjectId: user id
         """
-        user: dict = await self.layer.get_user_by_mobile(mobile_number)
-        if user:
-            return user["_id"]
-        new_user_id = await self.layer.insert_user(dict(mobile_number=mobile_number))
-        return new_user_id
+        try:
+            new_user_id = await self.layer.insert_user(
+                dict(mobile_number=mobile_number)
+            )
+            return new_user_id
+        except DuplicateKeyError as error:
+            exists_user = await self.layer.get_user_by_mobile(
+                error.details["keyValue"]["mobile_number"]
+            )
+            return exists_user["_id"]
 
     async def update_one_user(self, user_id: str, new_data: dict) -> bool:
         """update user
