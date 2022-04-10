@@ -49,9 +49,8 @@ async def test_get_user_by_id_user_not_found():
     assert errors.value.status_code == 404
 
 
-@patch("UserMS.controllers.external.logic.user.validators.validate_job")
 @async_mark
-async def test_update_user(validate_job: AsyncMock):
+async def test_update_user():
     # Setup
     update_user = mock_manager.mocks[
         data_layer_mocks
@@ -64,7 +63,6 @@ async def test_update_user(validate_job: AsyncMock):
     # Assert
     assert user["first_name"] == "Ali" and user["job"] == "programmer"
     assert update_user.called
-    assert validate_job.called
 
 
 @async_mark
