@@ -1,11 +1,8 @@
 from UserMS.data.creator import DataLayer
 from UserMS.data.creator import MongoDataLayer
 from UserMS.core.contrib import _
-from UserMS.core.contrib import validators
-from UserMS import Application as root
 from bson.objectid import ObjectId
 from fastapi import HTTPException
-from ..models.income.user import UserUpdateIncomeModel
 
 
 class UserRepository:
@@ -36,7 +33,6 @@ class UserRepository:
             user (dict): retrieved user
             data (dict): new data for user from income model
         """
-        await validators.validate_job(root.config["MONGO_DB"], job=data["job"])
         for key, value in data.items():
             user[key] = value
         await self.layer.update_user(user_id=user["_id"], document=user)
