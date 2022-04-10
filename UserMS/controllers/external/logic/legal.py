@@ -82,8 +82,8 @@ class LegalRepository:
             if legal["_id"] == new_legal_id:
                 if legal["is_used"]:
                     raise HTTPException(400, _("Legal info in use"))
-                else:
-                    found = True
+                found = True
+                break
             elif legal["buyer_id"] == new_buyer_id:
                 raise HTTPException(400, _("Legal info already exists"))
         if not found:
