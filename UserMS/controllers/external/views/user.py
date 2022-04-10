@@ -27,7 +27,7 @@ async def get_user(request: Request):
 
 @router.put("/user/", status_code=201)
 async def update_user(request: Request, data: UserUpdateIncomeModel):
-    await validators.validate_job(root.config["MONGO_DB"], job=data["job"])
+    await validators.validate_job(root.config["MONGO_DB"], job=data.job)
     await validators.validate_province_city(data.province_name, data.city_name)
     current_user: CurrentUser = request.state.user
     repository: UserRepository = UserRepository()
