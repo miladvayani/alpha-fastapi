@@ -46,7 +46,7 @@ async def update_user(request: Request, data: UserUpdateIncomeModel):
                 ),
             ).jsonify()
         ),
-        routing_key="auth_ms_test",
+        routing_key=root.config["AUTH_QUEUE_NAME"],
     )
 
     return Response(detail=_("Your info updated successfully"))
