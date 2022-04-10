@@ -22,7 +22,6 @@ from ..jwt import JWTManager
 from ..aes import AES
 from ..proxies import message
 from ..proxies import CurrentUser
-from ..redis import Redis
 from ..i18n import Babel
 
 
@@ -128,135 +127,12 @@ class ZipkinMiddleware(BaseHTTPMiddleware):
         return response
 
 
-class RedisAuthorizationMiddleware(BaseHTTPMiddleware):
-    def __init__(
-        self,
-        app: ASGIApp,
-        manager: JWTManager,
-        configs: dict,
-        redis: Redis,
-        dispatch: DispatchFunction = None,
-    ) -> None:
-        """_summary_
-
-        Args:
-            app (ASGIApp): ...
-            manager (JWTManager): instance
-            configs (dict): needed configs
-            redis (Redis): ...
-            dispatch (DispatchFunction, optional): dispatch function.
-            Defaults to None.
-        """
-        super().__init__(app, dispatch)
-        self.configs: dict = configs
-        self.manager: JWTManager = manager
-        self.redis: Redis = redis
-
-    async def dispatch(
-        self, request: Request, call_next: RequestResponseEndpoint
-    ) -> Response:
-        """dispatch function
-
-        Args:
-            request (Request): ...
-            call_next (RequestResponseEndpoint): ...
-
-        Returns:
-            Response: ...
-        """
-        token: str = request.headers.get("Authorization", None)
-        if token:
-            try:
-                request = await self.authorize(request=request)
-            except HTTPException as error:
-                message(error.detail)
-                return Response(status_code=error.status_code)
-        response = await call_next(request)
-        return response
-
-    def get_data(self, token: str) -> Union[CurrentUser, None]:
-        """
-        Decrypt token and return data
-        """
-        if token:
-            token = token.strip()
-            token = token.split(" ")[-1]
-            jwt_token = token
-            payload = self.manager.decode(
-                jwt_token,
-                self.configs.get("JWT_PUBLIC"),
-                algorithms=[self.configs.get("JWT_ALGORITHM")],
-            )
-            data = b64decode(payload["data"])
-            iv = b64decode(payload["identifier"])
-            dt = AES(self.configs.get("AES_KEY")).decrypt_ctr(data, iv)
-            dt = dt.replace("'", '"').replace("None", "null")
-            user = CurrentUser(
-                **json.loads(dt, object_hook=lambda e: SimpleNamespace(**e))
-            )
-            return user
-        return None
-
-    async def authorize(self, request: Request):
-        """
-        Check auth token in middleware and add user info for request stats
-        """
-        access_token: str = request.headers.get("Authorization", None)
-        request_path = request.scope["path"]
-        EXCLUDE_PATHS: str = self.configs.get("EXCLUDE_PATHS")
-        if EXCLUDE_PATHS:
-            exclude_paths = EXCLUDE_PATHS.split(",")
-            for path in exclude_paths:
-                if request_path in path:
-                    access_token = None
-                    break
-        if access_token:
-            try:
-                user_data = self.get_data(access_token)
-                DB_INDEX: int = self.configs["DB_INDEX"]
-                WEB_PATHS: str = self.configs["WEB_PATHS"]
-                if WEB_PATHS:
-                    web_paths = WEB_PATHS.split(",")
-                    for path in web_paths:
-                        if request_path in path:
-                            DB_INDEX = 0
-                            break
-                        else:
-                            DB_INDEX = 1
-                # redis existence check
-                value = await self.redis.op_on_db(
-                    "get", key=user_data.__dict__["mobile_number"]
-                )
-                if DB_INDEX == 1:
-                    if value:
-                        value = ast.literal_eval(value)
-                        if value["token"] != access_token.split(" ")[-1]:
-                            message("Invalid Request")
-                            return Response(
-                                status_code=401,
-                            )
-                else:
-                    if not value or value != access_token.split(" ")[-1]:
-                        message("Invalid Request")
-                        return Response(
-                            status_code=401,
-                        )
-            except HTTPException as error:
-                message(error.detail)
-                return Response(status_code=error.status_code)
-            user_data.is_authenticated = True
-            user_data._id = ObjectId(user_data._id)
-            request.state.user = user_data
-        return request
-
-
 class AuthorizationMiddleware(BaseHTTPMiddleware):
     def __init__(
         self,
         app: ASGIApp,
         manager: JWTManager,
         configs: dict,
-        redis: Redis,
         dispatch: DispatchFunction = None,
     ) -> None:
         """_summary_
@@ -272,7 +148,6 @@ class AuthorizationMiddleware(BaseHTTPMiddleware):
         super().__init__(app, dispatch)
         self.configs: dict = configs
         self.manager: JWTManager = manager
-        self.redis: Redis = redis
 
     async def dispatch(
         self, request: Request, call_next: RequestResponseEndpoint
