@@ -40,3 +40,6 @@ ujson==5.1.0
 urllib3==1.26.9
 uvicorn==0.17.5
 yarl==1.7.2
+black==22.1.0
+maisie-sphinx-theme==0.1.2
+Sphinx==4.4.0
