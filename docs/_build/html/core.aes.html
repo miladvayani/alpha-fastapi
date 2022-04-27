@@ -1,0 +1,398 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Licensed under the Apache 2.0 License -->
+  <link rel="stylesheet" type="text/css" href="_static/fonts/open-sans/stylesheet.css" />
+  <!-- Licensed under the SIL Open Font License -->
+  <link rel="stylesheet" type="text/css" href="_static/fonts/source-serif-pro/source-serif-pro.css" />
+  <link rel="stylesheet" type="text/css" href="_static/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="_static/css/bootstrap-theme.min.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    <title>core.aes package &#8212; Fastapi Core Plugins 1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/maisie.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="core.exceptions package" href="core.exceptions.html" />
+    <link rel="prev" title="core package" href="core.html" />
+  
+   
+
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="core.exceptions.html" title="core.exceptions package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="core.html" title="core package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Fastapi Core Plugins 1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >core-documents</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="core.html" accesskey="U">core package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">core.aes package</a></li> 
+      </ul>
+    </div>
+    <div class="container-wrapper">
+
+      <div id="mobile-toggle">
+        <a href="#"><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></a>
+      </div>
+  <div id="left-column">
+    <div class="sphinxsidebar">
+<div class="sidebar-block">
+  <div class="sidebar-wrapper">
+    <h2>Contents</h2>
+    <div class="sidebar-localtoc">
+      <ul>
+<li><a class="reference internal" href="#">core.aes package</a><ul>
+<li><a class="reference internal" href="#module-core.aes.aes">core.aes.aes module</a></li>
+<li><a class="reference internal" href="#module-core.aes">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+</div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="core.html"
+                          title="previous chapter">core package</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="core.exceptions.html"
+                          title="next chapter">core.exceptions package</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/core.aes.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div class="sidebar-block">
+  <div class="sidebar-wrapper">
+    <div id="main-search">
+      <form class="form-inline" action="search.html" method="GET" role="form">
+        <div class="input-group">
+          <input name="q" type="text" class="form-control" placeholder="Search...">
+        </div>
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+        <div id="right-column">
+          
+          <div role="navigation" aria-label="breadcrumbs navigation">
+            <ol class="breadcrumb">
+              <li><a href="index.html">Docs</a></li>
+              
+                <li><a href="modules.html">core-documents</a></li>
+              
+                <li><a href="core.html">core package</a></li>
+              
+              <li>core.aes package</li>
+            </ol>
+          </div>
+          
+          <div class="document clearer body">
+            
+  <div class="section" id="core-aes-package">
+<h1>core.aes package<a class="headerlink" href="#core-aes-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-core.aes.aes">
+<span id="core-aes-aes-module"></span><h2>core.aes.aes module<a class="headerlink" href="#module-core.aes.aes" title="Permalink to this headline">¶</a></h2>
+<p>This is an exercise in secure symmetric-key encryption, implemented in pure
+Python (no external libraries needed).</p>
+<p>Original AES-128 implementation by Bo Zhu (<a class="reference external" href="http://about.bozhu.me">http://about.bozhu.me</a>) at 
+<a class="reference external" href="https://github.com/bozhu/AES-Python">https://github.com/bozhu/AES-Python</a> . PKCS#7 padding, CBC mode, PKBDF2, HMAC,
+byte array and string support added by me at <a class="reference external" href="https://github.com/boppreh/aes">https://github.com/boppreh/aes</a>. 
+Other block modes contributed by &#64;righthandabacus.</p>
+<p>Although this is an exercise, the <cite>encrypt</cite> and <cite>decrypt</cite> functions should
+provide reasonable security to encrypted messages.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="core.aes.aes.AES">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><code class="sig-prename descclassname"><span class="pre">core.aes.aes.</span></code><code class="sig-name descname"><span class="pre">AES</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">master_key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.AES" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class for AES-128 encryption with CBC mode and PKCS#7.</p>
+<p>This is a raw implementation of AES, without key stretching or IV
+management. Unless you need that, please use <cite>encrypt</cite> and <cite>decrypt</cite>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="core.aes.aes.AES.decrypt_block">
+<code class="sig-name descname"><span class="pre">decrypt_block</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">ciphertext</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.AES.decrypt_block" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decrypts a single block of 16 byte long ciphertext.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.aes.aes.AES.decrypt_cbc">
+<code class="sig-name descname"><span class="pre">decrypt_cbc</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">ciphertext</span></span></em>, <em><span class="n"><span class="pre">iv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.AES.decrypt_cbc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decrypts <cite>ciphertext</cite> using CBC mode and PKCS#7 padding, with the given
+initialization vector (iv).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.aes.aes.AES.decrypt_cfb">
+<code class="sig-name descname"><span class="pre">decrypt_cfb</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">ciphertext</span></span></em>, <em><span class="n"><span class="pre">iv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.AES.decrypt_cfb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decrypts <cite>ciphertext</cite> with the given initialization vector (iv).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.aes.aes.AES.decrypt_ctr">
+<code class="sig-name descname"><span class="pre">decrypt_ctr</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">ciphertext</span></span></em>, <em><span class="n"><span class="pre">iv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.AES.decrypt_ctr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decrypts <cite>ciphertext</cite> using CTR mode with the given nounce/IV.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.aes.aes.AES.decrypt_ofb">
+<code class="sig-name descname"><span class="pre">decrypt_ofb</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">ciphertext</span></span></em>, <em><span class="n"><span class="pre">iv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.AES.decrypt_ofb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decrypts <cite>ciphertext</cite> using OFB mode initialization vector (iv).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.aes.aes.AES.decrypt_pcbc">
+<code class="sig-name descname"><span class="pre">decrypt_pcbc</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">ciphertext</span></span></em>, <em><span class="n"><span class="pre">iv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.AES.decrypt_pcbc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decrypts <cite>ciphertext</cite> using PCBC mode and PKCS#7 padding, with the given
+initialization vector (iv).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.aes.aes.AES.encrypt_block">
+<code class="sig-name descname"><span class="pre">encrypt_block</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">plaintext</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.AES.encrypt_block" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encrypts a single block of 16 byte long plaintext.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.aes.aes.AES.encrypt_cbc">
+<code class="sig-name descname"><span class="pre">encrypt_cbc</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">plaintext</span></span></em>, <em><span class="n"><span class="pre">iv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.AES.encrypt_cbc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encrypts <cite>plaintext</cite> using CBC mode and PKCS#7 padding, with the given
+initialization vector (iv).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.aes.aes.AES.encrypt_cfb">
+<code class="sig-name descname"><span class="pre">encrypt_cfb</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">plaintext</span></span></em>, <em><span class="n"><span class="pre">iv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.AES.encrypt_cfb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encrypts <cite>plaintext</cite> with the given initialization vector (iv).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.aes.aes.AES.encrypt_ctr">
+<code class="sig-name descname"><span class="pre">encrypt_ctr</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">plaintext</span></span></em>, <em><span class="n"><span class="pre">iv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.AES.encrypt_ctr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encrypts <cite>plaintext</cite> using CTR mode with the given nounce/IV.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.aes.aes.AES.encrypt_ofb">
+<code class="sig-name descname"><span class="pre">encrypt_ofb</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">plaintext</span></span></em>, <em><span class="n"><span class="pre">iv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.AES.encrypt_ofb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encrypts <cite>plaintext</cite> using OFB mode initialization vector (iv).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.aes.aes.AES.encrypt_pcbc">
+<code class="sig-name descname"><span class="pre">encrypt_pcbc</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">plaintext</span></span></em>, <em><span class="n"><span class="pre">iv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.AES.encrypt_pcbc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encrypts <cite>plaintext</cite> using PCBC mode and PKCS#7 padding, with the given
+initialization vector (iv).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="core.aes.aes.AES.rounds_by_key_size">
+<code class="sig-name descname"><span class="pre">rounds_by_key_size</span></code><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{16:</span> <span class="pre">10,</span> <span class="pre">24:</span> <span class="pre">12,</span> <span class="pre">32:</span> <span class="pre">14}</span></em><a class="headerlink" href="#core.aes.aes.AES.rounds_by_key_size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="core.aes.aes.add_round_key">
+<code class="sig-prename descclassname"><span class="pre">core.aes.aes.</span></code><code class="sig-name descname"><span class="pre">add_round_key</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">s</span></span></em>, <em><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.add_round_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="core.aes.aes.benchmark">
+<code class="sig-prename descclassname"><span class="pre">core.aes.aes.</span></code><code class="sig-name descname"><span class="pre">benchmark</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.benchmark" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="core.aes.aes.bytes2matrix">
+<code class="sig-prename descclassname"><span class="pre">core.aes.aes.</span></code><code class="sig-name descname"><span class="pre">bytes2matrix</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.bytes2matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a 16-byte array into a 4x4 matrix.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="core.aes.aes.decrypt">
+<code class="sig-prename descclassname"><span class="pre">core.aes.aes.</span></code><code class="sig-name descname"><span class="pre">decrypt</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">key</span></span></em>, <em><span class="n"><span class="pre">ciphertext</span></span></em>, <em><span class="n"><span class="pre">workload</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.decrypt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decrypts <cite>ciphertext</cite> with <cite>key</cite> using AES-128, an HMAC to verify integrity,
+and PBKDF2 to stretch the given key.</p>
+<p>The exact algorithm is specified in the module docstring.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="core.aes.aes.encrypt">
+<code class="sig-prename descclassname"><span class="pre">core.aes.aes.</span></code><code class="sig-name descname"><span class="pre">encrypt</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">key</span></span></em>, <em><span class="n"><span class="pre">plaintext</span></span></em>, <em><span class="n"><span class="pre">workload</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.encrypt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encrypts <cite>plaintext</cite> with <cite>key</cite> using AES-128, an HMAC to verify integrity,
+and PBKDF2 to stretch the given key.</p>
+<p>The exact algorithm is specified in the module docstring.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="core.aes.aes.get_key_iv">
+<code class="sig-prename descclassname"><span class="pre">core.aes.aes.</span></code><code class="sig-name descname"><span class="pre">get_key_iv</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">password</span></span></em>, <em><span class="n"><span class="pre">salt</span></span></em>, <em><span class="n"><span class="pre">workload</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.get_key_iv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stretches the password and extracts an AES key, an HMAC key and an AES
+initialization vector.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="core.aes.aes.inc_bytes">
+<code class="sig-prename descclassname"><span class="pre">core.aes.aes.</span></code><code class="sig-name descname"><span class="pre">inc_bytes</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">a</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.inc_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new byte array with the value increment by 1</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="core.aes.aes.inv_mix_columns">
+<code class="sig-prename descclassname"><span class="pre">core.aes.aes.</span></code><code class="sig-name descname"><span class="pre">inv_mix_columns</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.inv_mix_columns" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="core.aes.aes.inv_shift_rows">
+<code class="sig-prename descclassname"><span class="pre">core.aes.aes.</span></code><code class="sig-name descname"><span class="pre">inv_shift_rows</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.inv_shift_rows" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="core.aes.aes.inv_sub_bytes">
+<code class="sig-prename descclassname"><span class="pre">core.aes.aes.</span></code><code class="sig-name descname"><span class="pre">inv_sub_bytes</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.inv_sub_bytes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="core.aes.aes.matrix2bytes">
+<code class="sig-prename descclassname"><span class="pre">core.aes.aes.</span></code><code class="sig-name descname"><span class="pre">matrix2bytes</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">matrix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.matrix2bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a 4x4 matrix into a 16-byte array.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="core.aes.aes.mix_columns">
+<code class="sig-prename descclassname"><span class="pre">core.aes.aes.</span></code><code class="sig-name descname"><span class="pre">mix_columns</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.mix_columns" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="core.aes.aes.mix_single_column">
+<code class="sig-prename descclassname"><span class="pre">core.aes.aes.</span></code><code class="sig-name descname"><span class="pre">mix_single_column</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">a</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.mix_single_column" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="core.aes.aes.pad">
+<code class="sig-prename descclassname"><span class="pre">core.aes.aes.</span></code><code class="sig-name descname"><span class="pre">pad</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">plaintext</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.pad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pads the given plaintext with PKCS#7 padding to a multiple of 16 bytes.
+Note that if the plaintext size is a multiple of 16,
+a whole block will be added.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="core.aes.aes.shift_rows">
+<code class="sig-prename descclassname"><span class="pre">core.aes.aes.</span></code><code class="sig-name descname"><span class="pre">shift_rows</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.shift_rows" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="core.aes.aes.split_blocks">
+<code class="sig-prename descclassname"><span class="pre">core.aes.aes.</span></code><code class="sig-name descname"><span class="pre">split_blocks</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">message</span></span></em>, <em><span class="n"><span class="pre">block_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em><span class="n"><span class="pre">require_padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.split_blocks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="core.aes.aes.sub_bytes">
+<code class="sig-prename descclassname"><span class="pre">core.aes.aes.</span></code><code class="sig-name descname"><span class="pre">sub_bytes</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.sub_bytes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="core.aes.aes.unpad">
+<code class="sig-prename descclassname"><span class="pre">core.aes.aes.</span></code><code class="sig-name descname"><span class="pre">unpad</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">plaintext</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.unpad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes a PKCS#7 padding, returning the unpadded text and ensuring the
+padding was correct.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="core.aes.aes.xor_bytes">
+<code class="sig-prename descclassname"><span class="pre">core.aes.aes.</span></code><code class="sig-name descname"><span class="pre">xor_bytes</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">a</span></span></em>, <em><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.xor_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new byte array with the elements xor’ed.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="core.aes.aes.xtime">
+<code class="sig-prename descclassname"><span class="pre">core.aes.aes.</span></code><code class="sig-name descname"><span class="pre">xtime</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">a</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.aes.aes.xtime" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-core.aes">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-core.aes" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+            
+  <div class="footer-relations">
+    
+      <div class="pull-left">
+        <a class="btn btn-default" href="core.html" title="previous chapter (use the left arrow)">core package</a>
+      </div>
+    
+      <div class="pull-right">
+        <a class="btn btn-default" href="core.exceptions.html" title="next chapter (use the right arrow)">core.exceptions package</a>
+      </div>
+    </div>
+    <div class="clearer"></div>
+  
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="core.exceptions.html" title="core.exceptions package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="core.html" title="core package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Fastapi Core Plugins 1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >core-documents</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="core.html" >core package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">core.aes package</a></li> 
+      </ul>
+    </div>
+<script type="text/javascript">
+  $("#mobile-toggle a").click(function () {
+    $("#left-column").toggle();
+  });
+</script>
+<script type="text/javascript" src="_static/js/bootstrap.js"></script>
+  <div class="footer">
+    &copy; Copyright 2022, backed-hasebgsotar. Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  </body>
+</html>

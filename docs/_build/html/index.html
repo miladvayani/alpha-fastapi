@@ -1,0 +1,197 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Licensed under the Apache 2.0 License -->
+  <link rel="stylesheet" type="text/css" href="_static/fonts/open-sans/stylesheet.css" />
+  <!-- Licensed under the SIL Open Font License -->
+  <link rel="stylesheet" type="text/css" href="_static/fonts/source-serif-pro/source-serif-pro.css" />
+  <link rel="stylesheet" type="text/css" href="_static/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="_static/css/bootstrap-theme.min.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    <title>Fastapi Core Plugins’s documentation! &#8212; Fastapi Core Plugins 1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/maisie.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="core-documents" href="modules.html" />
+  
+   
+
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="core-documents"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">Fastapi Core Plugins 1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Fastapi Core Plugins’s documentation!</a></li> 
+      </ul>
+    </div>
+    <div class="container-wrapper">
+
+      <div id="mobile-toggle">
+        <a href="#"><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></a>
+      </div>
+  <div id="left-column">
+    <div class="sphinxsidebar">
+<div class="sidebar-block">
+  <div class="sidebar-wrapper">
+    <h2>Contents</h2>
+    <div class="sidebar-localtoc">
+      <ul>
+<li><a class="reference internal" href="#">Fastapi Core Plugins’s documentation!</a></li>
+<li><a class="reference internal" href="#sphinx-help">Sphinx help</a></li>
+<li><a class="reference internal" href="#content">Content</a></li>
+</ul>
+
+    </div>
+  </div>
+</div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="modules.html"
+                          title="next chapter">core-documents</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div class="sidebar-block">
+  <div class="sidebar-wrapper">
+    <div id="main-search">
+      <form class="form-inline" action="search.html" method="GET" role="form">
+        <div class="input-group">
+          <input name="q" type="text" class="form-control" placeholder="Search...">
+        </div>
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+        <div id="right-column">
+          
+          <div role="navigation" aria-label="breadcrumbs navigation">
+            <ol class="breadcrumb">
+              <li><a href="#">Docs</a></li>
+              
+              <li>Fastapi Core Plugins’s documentation!</li>
+            </ol>
+          </div>
+          
+          <div class="document clearer body">
+            
+  <div class="section" id="fastapi-core-plugins-s-documentation">
+<h1>Fastapi Core Plugins’s documentation!<a class="headerlink" href="#fastapi-core-plugins-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://gitlab.hasebgostar.com/fastapi-core-plugs">Fast api core source codes</a></p>
+</div>
+<div class="section" id="sphinx-help">
+<h1>Sphinx help<a class="headerlink" href="#sphinx-help" title="Permalink to this headline">¶</a></h1>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">Read the document below for use sphinx auto doc generator config settings</p>
+</div>
+<ol class="arabic">
+<li><p class="first">Go in <code class="docutils literal notranslate"><span class="pre">docs</span></code> directory and add <strong>sphinx-quickstart</strong> command to generate basics of documentation.</p>
+</li>
+<li><p class="first">Set the following in your existing Sphinx documentation’s <code class="docutils literal notranslate"><span class="pre">conf.py</span></code> file:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s2">&quot;..&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;sphinx.ext.autodoc&quot;</span><span class="p">,</span> <span class="s2">&quot;maisie_sphinx_theme&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">maisie_sphinx_theme</span>
+
+<span class="n">html_theme</span> <span class="o">=</span> <span class="s1">&#39;maisie_sphinx_theme&#39;</span>
+<span class="n">html_theme_path</span> <span class="o">=</span> <span class="n">maisie_sphinx_theme</span><span class="o">.</span><span class="n">html_theme_path</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gettext_additional_targets</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;literal-block&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Build your Sphinx documentation of all plugins automatically with command <strong>sphinx-apidoc -o . ..</strong>:</p>
+</li>
+<li><p class="first">Then use <strong>make html</strong> command for generate new html file from your generated documents</p>
+</li>
+</ol>
+</div>
+<div class="section" id="content">
+<h1>Content<a class="headerlink" href="#content" title="Permalink to this headline">¶</a></h1>
+<blockquote>
+<div>Html path: <code class="docutils literal notranslate"><span class="pre">'_build/html/index.html'</span></code></div></blockquote>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">core-documents</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="core.html">core package</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+            
+  <div class="footer-relations">
+    
+      <div class="pull-right">
+        <a class="btn btn-default" href="modules.html" title="next chapter (use the right arrow)">core-documents</a>
+      </div>
+    </div>
+    <div class="clearer"></div>
+  
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="core-documents"
+             >next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">Fastapi Core Plugins 1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Fastapi Core Plugins’s documentation!</a></li> 
+      </ul>
+    </div>
+<script type="text/javascript">
+  $("#mobile-toggle a").click(function () {
+    $("#left-column").toggle();
+  });
+</script>
+<script type="text/javascript" src="_static/js/bootstrap.js"></script>
+  <div class="footer">
+    &copy; Copyright 2022, backed-hasebgsotar. Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  </body>
+</html>
