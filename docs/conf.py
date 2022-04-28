@@ -14,7 +14,7 @@ import os
 import sys
 import maisie_sphinx_theme
 
-sys.path.insert(0, os.path.abspath("../core-documents"))
+sys.path.insert(0, os.path.abspath(".."))
 
 
 # -- Project information -----------------------------------------------------
