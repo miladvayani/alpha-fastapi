@@ -4,7 +4,7 @@ core.aes package
 core.aes.aes module
 -------------------
 
-.. automodule:: core.aes.aes
+.. automodule:: UserMS.core.aes.aes
    :members:
    :undoc-members:
    :show-inheritance:
@@ -12,7 +12,7 @@ core.aes.aes module
 Module contents
 ---------------
 
-.. automodule:: core.aes
+.. automodule:: UserMS.core.aes
    :members:
    :undoc-members:
    :show-inheritance:
