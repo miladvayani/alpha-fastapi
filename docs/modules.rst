@@ -2,6 +2,6 @@ core-documents
 ==============
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 5
 
-   core
+   UserMS
