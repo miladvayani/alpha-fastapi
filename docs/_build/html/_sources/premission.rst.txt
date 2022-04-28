@@ -1,0 +1,34 @@
+premission package
+==================
+
+premission.checker module
+-------------------------
+
+.. automodule:: premission.checker
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+premission.interface module
+---------------------------
+
+.. automodule:: premission.interface
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+premission.services module
+--------------------------
+
+.. automodule:: premission.services
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: premission
+   :members:
+   :undoc-members:
+   :show-inheritance:
