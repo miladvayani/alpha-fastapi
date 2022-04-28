@@ -1,0 +1,249 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Licensed under the Apache 2.0 License -->
+  <link rel="stylesheet" type="text/css" href="_static/fonts/open-sans/stylesheet.css" />
+  <!-- Licensed under the SIL Open Font License -->
+  <link rel="stylesheet" type="text/css" href="_static/fonts/source-serif-pro/source-serif-pro.css" />
+  <link rel="stylesheet" type="text/css" href="_static/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="_static/css/bootstrap-theme.min.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    <title>core.permissions package &#8212; Fastapi Core Plugins 1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/maisie.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+  
+   
+
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Fastapi Core Plugins 1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">core.permissions package</a></li> 
+      </ul>
+    </div>
+    <div class="container-wrapper">
+
+      <div id="mobile-toggle">
+        <a href="#"><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></a>
+      </div>
+  <div id="left-column">
+    <div class="sphinxsidebar">
+<div class="sidebar-block">
+  <div class="sidebar-wrapper">
+    <h2>Contents</h2>
+    <div class="sidebar-localtoc">
+      <ul>
+<li><a class="reference internal" href="#">core.permissions package</a><ul>
+<li><a class="reference internal" href="#module-core.permissions.checker">core.permissions.checker module</a></li>
+<li><a class="reference internal" href="#module-core.permissions.interface">core.permissions.interface module</a></li>
+<li><a class="reference internal" href="#module-core.permissions.services">core.permissions.services module</a></li>
+<li><a class="reference internal" href="#module-core.permissions">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/core.permissions.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div class="sidebar-block">
+  <div class="sidebar-wrapper">
+    <div id="main-search">
+      <form class="form-inline" action="search.html" method="GET" role="form">
+        <div class="input-group">
+          <input name="q" type="text" class="form-control" placeholder="Search...">
+        </div>
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+        <div id="right-column">
+          
+          <div role="navigation" aria-label="breadcrumbs navigation">
+            <ol class="breadcrumb">
+              <li><a href="index.html">Docs</a></li>
+              
+              <li>core.permissions package</li>
+            </ol>
+          </div>
+          
+          <div class="document clearer body">
+            
+  <div class="section" id="core-permissions-package">
+<h1>core.permissions package<a class="headerlink" href="#core-permissions-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-core.permissions.checker">
+<span id="core-permissions-checker-module"></span><h2>core.permissions.checker module<a class="headerlink" href="#module-core.permissions.checker" title="Permalink to this headline">¶</a></h2>
+<p>– for use in endpoints and interact with permission interfaces with no service interference</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="core.permissions.checker.PermissionChecker">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><code class="sig-prename descclassname"><span class="pre">core.permissions.checker.</span></code><code class="sig-name descname"><span class="pre">PermissionChecker</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#core.permissions.interface.IPermission" title="core.permissions.interface.IPermission"><span class="pre">core.permissions.interface.IPermission</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.permissions.checker.PermissionChecker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="core.permissions.checker.PermissionChecker.check">
+<code class="sig-name descname"><span class="pre">check</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">starlette.requests.Request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.permissions.checker.PermissionChecker.check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function for call defined service check_access function</p>
+<dl class="docutils">
+<dt>Args:</dt><dd>request (Request): request</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-core.permissions.interface">
+<span id="core-permissions-interface-module"></span><h2>core.permissions.interface module<a class="headerlink" href="#module-core.permissions.interface" title="Permalink to this headline">¶</a></h2>
+<p>– for use in services and call in checker class</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="core.permissions.interface.IPermission">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><code class="sig-prename descclassname"><span class="pre">core.permissions.interface.</span></code><code class="sig-name descname"><span class="pre">IPermission</span></code><a class="headerlink" href="#core.permissions.interface.IPermission" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="core.permissions.interface.IPermission.check_access">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><code class="sig-name descname"><span class="pre">check_access</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">starlette.requests.Request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.permissions.interface.IPermission.check_access" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function for check permission access (every driven class must impeliment)</p>
+<dl class="docutils">
+<dt>Args:</dt><dd>request (Request): request for get user information</dd>
+<dt>Raises:</dt><dd>NotImplementedError: if the driven class didn’t implement the function</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-core.permissions.services">
+<span id="core-permissions-services-module"></span><h2>core.permissions.services module<a class="headerlink" href="#module-core.permissions.services" title="Permalink to this headline">¶</a></h2>
+<p>for various permissions and inherit from IPermission to use its functions</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>– if you want to add new permission role:</dt><dd>add your class there and implement IPermission functions like others</dd>
+</dl>
+</div></blockquote>
+<dl class="py class">
+<dt class="sig sig-object py" id="core.permissions.services.UserAuthenticated">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><code class="sig-prename descclassname"><span class="pre">core.permissions.services.</span></code><code class="sig-name descname"><span class="pre">UserAuthenticated</span></code><a class="headerlink" href="#core.permissions.services.UserAuthenticated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#core.permissions.interface.IPermission" title="core.permissions.interface.IPermission"><code class="xref py py-class docutils literal notranslate"><span class="pre">core.permissions.interface.IPermission</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="core.permissions.services.UserAuthenticated.check_access">
+<code class="sig-name descname"><span class="pre">check_access</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">starlette.requests.Request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.permissions.services.UserAuthenticated.check_access" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function for check permission access (every driven class must impeliment)</p>
+<dl class="docutils">
+<dt>Args:</dt><dd>request (Request): request for get user information</dd>
+<dt>Raises:</dt><dd>NotImplementedError: if the driven class didn’t implement the function</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="core.permissions.services.WorkspaceOwner">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><code class="sig-prename descclassname"><span class="pre">core.permissions.services.</span></code><code class="sig-name descname"><span class="pre">WorkspaceOwner</span></code><a class="headerlink" href="#core.permissions.services.WorkspaceOwner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#core.permissions.interface.IPermission" title="core.permissions.interface.IPermission"><code class="xref py py-class docutils literal notranslate"><span class="pre">core.permissions.interface.IPermission</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="core.permissions.services.WorkspaceOwner.check_access">
+<code class="sig-name descname"><span class="pre">check_access</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">starlette.requests.Request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.permissions.services.WorkspaceOwner.check_access" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function for check permission access (every driven class must impeliment)</p>
+<dl class="docutils">
+<dt>Args:</dt><dd>request (Request): request for get user information</dd>
+<dt>Raises:</dt><dd>NotImplementedError: if the driven class didn’t implement the function</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="core.permissions.services.WorkspaceUser">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><code class="sig-prename descclassname"><span class="pre">core.permissions.services.</span></code><code class="sig-name descname"><span class="pre">WorkspaceUser</span></code><a class="headerlink" href="#core.permissions.services.WorkspaceUser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#core.permissions.interface.IPermission" title="core.permissions.interface.IPermission"><code class="xref py py-class docutils literal notranslate"><span class="pre">core.permissions.interface.IPermission</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="core.permissions.services.WorkspaceUser.check_access">
+<code class="sig-name descname"><span class="pre">check_access</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">starlette.requests.Request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#core.permissions.services.WorkspaceUser.check_access" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function for check permission access (every driven class must impeliment)</p>
+<dl class="docutils">
+<dt>Args:</dt><dd>request (Request): request for get user information</dd>
+<dt>Raises:</dt><dd>NotImplementedError: if the driven class didn’t implement the function</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-core.permissions">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-core.permissions" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>For add new permission:</dt><dd>Add your specific permission class in the service.py file add inherit it from the IPermission interface.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>For use permission:</dt><dd>Create new object of PermissionChecker in checker.py and pass the new object of permission service to class __init__ 
+then call check function for fastapi depends in router.</dd>
+</dl>
+</li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">Example</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dependencies</span> <span class="o">=</span> <span class="p">[</span><span class="n">Depends</span><span class="p">(</span><span class="n">PermissionChecker</span><span class="p">(</span><span class="n">UserAuthenticated</span><span class="p">())</span><span class="o">.</span><span class="n">check</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+            
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Fastapi Core Plugins 1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">core.permissions package</a></li> 
+      </ul>
+    </div>
+<script type="text/javascript">
+  $("#mobile-toggle a").click(function () {
+    $("#left-column").toggle();
+  });
+</script>
+<script type="text/javascript" src="_static/js/bootstrap.js"></script>
+  <div class="footer">
+    &copy; Copyright 2022, backed-hasebgsotar. Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  </body>
+</html>
