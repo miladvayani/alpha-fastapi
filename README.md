@@ -2,6 +2,8 @@
 
 ## Description
 This microservice is designed to manage users.
+It's a sample for how to use fastapi and other stacks togather for develop services with high performance.
+
 ***
 ## Technology Stack
 
